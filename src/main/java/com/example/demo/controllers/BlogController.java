@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -42,15 +43,28 @@ public class BlogController {
             @RequestParam String fullText, Model model) {
 
 
-        Post post = new Post(title,anons,fullText,user);
+        Post post = new Post(title, anons, fullText, user);
         postRepository.save(post);
         return "redirect:/blog";
     }
 
+    @PostMapping("filter")
+    public String blogFilter(@RequestParam String filter, Model model) {
+        Iterable<Post> posts;
+
+        if (filter != null && !filter.isEmpty()) {
+            posts = postRepository.findByTitle(filter);
+
+        } else {
+            posts = postRepository.findAll();
+        }
+        model.addAttribute("posts", posts);
+        return "blog-main";
+    }
 
     @GetMapping("/blog/{id}")
     public String blogDetails(@PathVariable(value = "id") long id, Model model) {
-        if (!postRepository.existsById(id)){
+        if (!postRepository.existsById(id)) {
             return "redirect:/blog";
         }
 
@@ -65,7 +79,7 @@ public class BlogController {
 
     @GetMapping("/blog/{id}/edit")
     public String blogEdit(@PathVariable(value = "id") long id, Model model) {
-        if (!postRepository.existsById(id)){
+        if (!postRepository.existsById(id)) {
             return "redirect:/blog";
         }
 

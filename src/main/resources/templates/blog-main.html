@@ -9,6 +9,12 @@
 
 <header th:insert="blocks/header :: header"></header>
 
+<form method="post" action="filter">
+    <input type="text" name="filter">
+    <button type="submit">Найти блог</button>
+</form>
+
+
 <div class="container mt-5">
     <h>Блог сайта</h>
     <div th:each="element : ${posts}" class="alert alert-info mt-2">
@@ -18,6 +24,8 @@
         <a th:href="'/blog/' + ${element.id}" class="btn btn-warning">Детальнее</a>
     </div>
 </div>
+
+
 
 <div th:insert="blocks/footer :: footer"></div>
 
