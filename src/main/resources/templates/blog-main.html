@@ -9,8 +9,8 @@
 
 <header th:insert="blocks/header :: header"></header>
 
-<form method="post" action="filter">
-    <input type="text" name="filter">
+<form method="get" action="/blog">
+    <input type="text" name="filter" th:value="${filter}">
     <button type="submit">Найти блог</button>
 </form>
 

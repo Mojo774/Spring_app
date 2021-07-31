@@ -23,9 +23,20 @@ public class BlogController {
     private PostRepository postRepository;
 
     @GetMapping("/blog")
-    public String blogMain(Model model) {
-        Iterable<Post> posts = postRepository.findAll();
+    public String blogMain(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
+
+        Iterable<Post> posts;
+
+        if (filter != null && !filter.isEmpty()) {
+            posts = postRepository.findByTitle(filter);
+
+        } else {
+            posts = postRepository.findAll();
+        }
         model.addAttribute("posts", posts);
+        model.addAttribute("filter", filter);
+
+
         return "blog-main";
     }
 
@@ -48,8 +59,8 @@ public class BlogController {
         return "redirect:/blog";
     }
 
-    @PostMapping("filter")
-    public String blogFilter(@RequestParam String filter, Model model) {
+    /*@PostMapping("filter")
+    public String blogFilter(@RequestParam(required = false) String filter, Model model) {
         Iterable<Post> posts;
 
         if (filter != null && !filter.isEmpty()) {
@@ -59,8 +70,9 @@ public class BlogController {
             posts = postRepository.findAll();
         }
         model.addAttribute("posts", posts);
+        model.addAttribute("filter", filter);
         return "blog-main";
-    }
+    }*/
 
     @GetMapping("/blog/{id}")
     public String blogDetails(@PathVariable(value = "id") long id, Model model) {
