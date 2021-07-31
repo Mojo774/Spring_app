@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+
+<header th:insert="blocks/header :: header"></header>
+
+<h1>Редактирование пользователя</h1>
+
+<form action="/user" method="post">
+    <div th:each="element : ${user}" class="alert alert-info mt-2">
+        <h3 th:text="${element.getUsername()}"/>
+
+        <div th:each="role : ${userRoles}">
+            <label><input type="checkbox" th:name="${role.getKey()}" th:text="' ' + ${role.getKey()}" th:checked="${role.getValue()}? 'checked'"/></label>
+        </div>
+        <input type="hidden" th:value="${element.getId()}" name="userId">
+    </div>
+    <button type="submit">Save</button>
+</form>
+
+
+<div th:insert="blocks/footer :: footer"></div>
+
+</body>
+</html>

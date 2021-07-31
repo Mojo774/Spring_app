@@ -31,10 +31,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .formLogin()
                     .loginPage("/login")
+                    //Перенарпавление на главную страницу после успешного входа
+                    .defaultSuccessUrl("/")
                     .permitAll()
                 .and()
                     .logout()
                     .permitAll()
+                    .logoutSuccessUrl("/")
                 .and()
                     .csrf().disable(); // отключение CSRF
 

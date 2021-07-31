@@ -7,22 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/blog")
 public class BlogController {
 
     @Autowired
     private PostRepository postRepository;
 
-    @GetMapping("/blog")
+    @GetMapping
     public String blogMain(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
 
         Iterable<Post> posts;
@@ -40,13 +38,13 @@ public class BlogController {
         return "blog-main";
     }
 
-    @GetMapping("/blog/add")
+    @GetMapping("/add")
     public String blogAdd(Model model) {
         return "blog-add";
     }
 
     // Параметры - это атрибуты, которые пользователь ввел. Названия такие же как в html
-    @PostMapping("/blog/add")
+    @PostMapping("/add")
     public String blogPostAdd(
             @AuthenticationPrincipal User user,
             @RequestParam String title,
@@ -59,22 +57,8 @@ public class BlogController {
         return "redirect:/blog";
     }
 
-    /*@PostMapping("filter")
-    public String blogFilter(@RequestParam(required = false) String filter, Model model) {
-        Iterable<Post> posts;
 
-        if (filter != null && !filter.isEmpty()) {
-            posts = postRepository.findByTitle(filter);
-
-        } else {
-            posts = postRepository.findAll();
-        }
-        model.addAttribute("posts", posts);
-        model.addAttribute("filter", filter);
-        return "blog-main";
-    }*/
-
-    @GetMapping("/blog/{id}")
+    @GetMapping("/{id}")
     public String blogDetails(@PathVariable(value = "id") long id, Model model) {
         if (!postRepository.existsById(id)) {
             return "redirect:/blog";
@@ -89,7 +73,7 @@ public class BlogController {
         return "blog-details";
     }
 
-    @GetMapping("/blog/{id}/edit")
+    @GetMapping("/{id}/edit")
     public String blogEdit(@PathVariable(value = "id") long id, Model model) {
         if (!postRepository.existsById(id)) {
             return "redirect:/blog";
@@ -105,7 +89,7 @@ public class BlogController {
     }
 
 
-    @PostMapping("/blog/{id}/edit")
+    @PostMapping("/{id}/edit")
     public String blogPostUpdate(@PathVariable(value = "id") long id, @RequestParam String title, @RequestParam String anons, @RequestParam String fullText, Model model) {
 
         Post post = postRepository.findById(id).orElseThrow();
@@ -117,7 +101,7 @@ public class BlogController {
         return "redirect:/blog";
     }
 
-    @PostMapping("/blog/{id}/remove")
+    @PostMapping("/{id}/remove")
     public String blogPostDelete(@PathVariable(value = "id") long id, Model model) {
 
         Post post = postRepository.findById(id).orElseThrow();

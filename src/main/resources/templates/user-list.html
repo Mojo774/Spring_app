@@ -9,12 +9,15 @@
 
 <header th:insert="blocks/header :: header"></header>
 
-<h1>Мой профиль</h1>
+<div th:each="element : ${users}" class="alert alert-info mt-2">
+    <h3 th:text="${element.getUsername()}" />
+    <div th:each="role : ${element.getRoles()}">
+        <p th:text="${role}"/>
+    </div>
+    <a th:href="'/user/' + ${element.getId()}" class="btn btn-warning">Редактировать</a>
 
-<h4><a href="/user">Список пользователей</a></h4>
 
-<h4><a href="/logout">Выйти</a></h4>
-
+</div>
 
 <div th:insert="blocks/footer :: footer"></div>
 

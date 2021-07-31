@@ -10,7 +10,7 @@ public class ProfileController {
 
     @GetMapping("/profile")
     public String home(Model model) {
-        model.addAttribute("title", "Главная страница");
+        model.addAttribute("title", "Мой профиль");
         return "profile";
     }
 
