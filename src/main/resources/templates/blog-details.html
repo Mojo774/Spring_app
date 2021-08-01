@@ -17,16 +17,14 @@
         <p><b>Просмотры</b> <span th:text="${element.views}"/></p>
 
 
-        <div th:switch="${element.getAuthor().getId()}">
-            <div th:case="${currentUser.getId()}">
-                <a th:href="'/blog/' + ${element.id} + '/edit'" class="btn btn-warning">Редактировать</a>
-
-                <form th:action="'/blog/' + ${element.id} + '/remove'" method="post">
-                    <button class="btn btn-warning" type="submit">Удалить</button>
-                </form>
-            </div>
 
 
+        <div th:if="${element.getAuthor().getId()} == ${currentUser.getId()} or ${currentUser.isAdmin()}">
+            <a th:href="'/blog/' + ${element.id} + '/edit'" class="btn btn-warning">Редактировать</a>
+
+            <form th:action="'/blog/' + ${element.id} + '/remove'" method="post">
+                <button class="btn btn-warning" type="submit">Удалить</button>
+            </form>
         </div>
 
 
