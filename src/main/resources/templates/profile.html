@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:security="http://www.w3.org/1999/xhtml">
 <head>
     <div th:insert="blocks/bootstrap :: bootstrap"></div>
 
@@ -12,10 +12,11 @@
 <h1>Мой профиль</h1>
 <h4 th:text="'My name: ' + ${username}"></h4>
 
-<h4><a href="/user">Список пользователей</a></h4>
+<div sec:authorize="hasAuthority('ADMIN')">
+        <h4><a href="/user">Список пользователей</a></h4>
+</div>
 
 <h4><a href="/logout">Выйти</a></h4>
-
 
 <div th:insert="blocks/footer :: footer"></div>
 

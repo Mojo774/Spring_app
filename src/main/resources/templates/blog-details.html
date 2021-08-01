@@ -11,16 +11,25 @@
 
 <div class="container mt-5">
     <div th:each="element : ${post}" class="alert alert-info mt-2">
-        <h1 th:text="${element.title}" />
+        <h1 th:text="${element.title}"/>
         <p th:text="${element.fullText}"/>
-        <p> <b>Автор</b>  <span  th:text="${element.getAuthor().getUsername()}" /> </p>
-        <p> <b>Просмотры</b>  <span  th:text="${element.views}" /> </p>
+        <p><b>Автор</b> <span th:text="${element.getAuthor().getUsername()}"/></p>
+        <p><b>Просмотры</b> <span th:text="${element.views}"/></p>
 
 
-        <a th:href="'/blog/' + ${element.id} + '/edit'" class="btn btn-warning">Редактировать</a><br><br>
-        <form th:action="'/blog/' + ${element.id} + '/remove'" method="post">
-            <button class="btn btn-warning" type="submit">Удалить</button>
-        </form>
+        <div th:switch="${element.getAuthor().getId()}">
+            <div th:case="${currentUser.getId()}">
+                <a th:href="'/blog/' + ${element.id} + '/edit'" class="btn btn-warning">Редактировать</a>
+
+                <form th:action="'/blog/' + ${element.id} + '/remove'" method="post">
+                    <button class="btn btn-warning" type="submit">Удалить</button>
+                </form>
+            </div>
+
+
+        </div>
+
+
     </div>
 </div>
 

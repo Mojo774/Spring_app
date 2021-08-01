@@ -5,6 +5,7 @@ import com.example.demo.models.User;
 import com.example.demo.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -70,6 +71,11 @@ public class BlogController {
         post.ifPresent(res::add);
         model.addAttribute("post", res);
 
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("currentUser",user);
+
+
+
         return "blog-details";
     }
 
@@ -84,6 +90,7 @@ public class BlogController {
         ArrayList<Post> res = new ArrayList<>();
         post.ifPresent(res::add);
         model.addAttribute("post", res);
+
 
         return "blog-edit";
     }
