@@ -2,6 +2,7 @@ package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
 // Нужен для использования sec:
@@ -11,4 +12,6 @@ public class ThymeleafConfig {
     public SpringSecurityDialect springSecurityDialect(){
         return new SpringSecurityDialect();
     }
+
+
 }

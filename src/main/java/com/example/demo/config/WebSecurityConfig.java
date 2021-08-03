@@ -28,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     // Полный доступ для всех пользователей на страницы (для остальных нужна регистрация)
-                    .antMatchers("/","/blog","/about","/registration").permitAll()
+                    .antMatchers("/","/blog","/about","/registration","/activate/*").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()

@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "user")
@@ -17,6 +18,9 @@ public class User implements UserDetails{
     private String username;
     private String password;
     private boolean active;
+
+    private String email;
+    private String activationCode;
 
     // EAGER (жадный) - подгружает данные (роли) сразу
     // LAZY (ленивый) - подгружает данные только когда мы к ним обратимся
@@ -68,8 +72,33 @@ public class User implements UserDetails{
         return roles;
     }
 
+    public String getRolesAsString() {
+        // ADMIN, USER
+
+        Set<String> s =  roles.stream().map(x -> x.getAuthority()).collect(Collectors.toSet());
+        String ss = s.stream().collect(Collectors.joining(","));
+
+        return ss;
+    }
+
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 
     @Override
@@ -89,11 +118,12 @@ public class User implements UserDetails{
 
     @Override
     public boolean isEnabled() {
-        return isActive();
+        return activationCode==null;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
+
 }
