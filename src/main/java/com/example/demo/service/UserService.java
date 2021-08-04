@@ -37,6 +37,14 @@ public class UserService implements UserDetailsService {
 
     }
 
+    private void sendMessage(String email, String message) {
+        if (!StringUtils.isEmpty(email)){
+            // Ссылку можно вынести в пропиртис
+
+            mailSender.send(email,"Activation code", message);
+        }
+    }
+
     public boolean findEmail(User user){
         User userFromDb = userRepository.findByEmail(user.getNewEmail());
 
@@ -58,10 +66,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void addUser(User user){
-
-
         if (findUsername(user)){
-            System.out.println("we");
             return;
         }
 
@@ -78,18 +83,10 @@ public class UserService implements UserDetailsService {
                 user.getUsername(),
                 user.getActivationCode()
         );
+
         sendMessage(user.getNewEmail(), message);
-
-
     }
 
-    private void sendMessage(String email, String message) {
-        if (!StringUtils.isEmpty(email)){
-            // Ссылку можно вынести в пропиртис
-
-            mailSender.send(email,"Activation code", message);
-        }
-    }
 
     public boolean activateUser(String code) {
         User user = userRepository.findByActivationCode(code);
@@ -175,4 +172,6 @@ public class UserService implements UserDetailsService {
         }
         return true;
     }
+
+
 }
