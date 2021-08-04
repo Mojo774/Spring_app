@@ -92,6 +92,13 @@
 			<version>1.4.7</version>
 		</dependency>
 
+		<!-- flywaydb нужен для БД -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>

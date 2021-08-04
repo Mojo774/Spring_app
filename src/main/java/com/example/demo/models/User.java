@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,7 +13,8 @@ import java.util.stream.Collectors;
 @Table(name = "user")
 public class User implements UserDetails{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     private Long id;
 
     private String username;
@@ -22,6 +24,10 @@ public class User implements UserDetails{
     private String email;
     private String activationCode;
 
+    // Заменяют основной после активации с почты
+    private String newPassword;
+    private String newEmail;
+
     // EAGER (жадный) - подгружает данные (роли) сразу
     // LAZY (ленивый) - подгружает данные только когда мы к ним обратимся
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -30,6 +36,22 @@ public class User implements UserDetails{
     private Set<Role> roles;
 
     public User() {
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public String getNewEmail() {
+        return newEmail;
+    }
+
+    public void setNewEmail(String newEmail) {
+        this.newEmail = newEmail;
     }
 
     public boolean isAdmin(){
@@ -118,7 +140,7 @@ public class User implements UserDetails{
 
     @Override
     public boolean isEnabled() {
-        return activationCode==null;
+        return isActive();
     }
 
     @Override
