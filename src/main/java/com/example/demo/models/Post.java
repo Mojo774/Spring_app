@@ -1,8 +1,11 @@
 package com.example.demo.models;
 
+import com.sun.istack.NotNull;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Post {
@@ -11,7 +14,18 @@ public class Post {
     @GenericGenerator(name = "native", strategy = "native")
     private Long id;
 
-    private String title, anons, fullText;
+    @NotBlank (message = "Please fill the message")
+    @Length(max = 300, message = "Title too long")
+    private String title;
+
+    @NotBlank (message = "Please fill the message")
+    @Length(max = 300, message = "Anons too long")
+    private String anons;
+
+    @NotBlank (message = "Please fill the message")
+    @Length(max = 2048, message = "Message too long (more than 2kB)")
+    private String fullText;
+
     private int views;
 
     @ManyToOne(fetch = FetchType.EAGER)

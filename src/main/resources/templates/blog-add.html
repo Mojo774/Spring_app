@@ -16,13 +16,50 @@
     <form action="/blog/add" method="post">
 
 
-        <input type="text" name="title" placeholder="Введите название статьи" class="form-control"><br>
-        <input type="text" name="anons" placeholder="Введите анонс статьи" class="form-control"><br>
-        <textarea name="fullText" placeholder="Введите текст статьи" class="form-control"></textarea><br>
+        <div th:if="${titleError != null}">
+            <input type="text" class="form-control is-invalid" th:value="${post.getTitle()}" name="title"
+                   placeholder="Введите название статьи">
+
+            <div th:text="${titleError}" class="invalid-feedback">
+
+            </div>
+
+        </div>
+        <div th:unless="${titleError != null}">
+            <input type="text" class="form-control" th:value="${post.getTitle()}" name="title" placeholder="Введите название статьи">
+        </div>  <br>
 
 
 
-        <button type="submit" class="btn btn-success">Добавить статью</button>
+        <div th:if="${anonsError != null}">
+
+            <input type="text" class="form-control is-invalid" th:value="${post.getAnons()}" name="anons"
+                   placeholder="Введите анонс статьи">
+            <div th:text="${anonsError}" class="invalid-feedback">
+
+            </div>
+
+        </div>
+        <div th:unless="${anonsError != null}">
+            <input type="text" class="form-control" th:value="${post.getAnons()}" name="anons" placeholder="Введите анонс статьи">
+        </div>  <br>
+
+
+
+        <div th:if="${fullTextError != null}">
+            <input type="text" class="form-control is-invalid" th:value="${post.getFullText()}" name="fullText"
+                   placeholder="Введите текст статьи">
+
+            <div th:text="${fullTextError}" class="invalid-feedback">
+
+            </div>
+        </div>
+        <div th:unless="${fullTextError != null}">
+            <input type="text" class="form-control" th:value="${post.getFullText()}" name="fullText" placeholder="Введите текст статьи">
+        </div>  <br>
+
+
+        <br><br><button type="submit" class="btn btn-success">Добавить статью</button>
         <input type='hidden' value='${_csrf.token}' name='${_csrf.parameterName}'/>
     </form>
 

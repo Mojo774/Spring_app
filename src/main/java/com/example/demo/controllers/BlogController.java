@@ -8,11 +8,17 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/blog")
@@ -41,6 +47,8 @@ public class BlogController {
 
     @GetMapping("/add")
     public String blogAdd(Model model) {
+        Post post = new Post();
+        model.addAttribute("post",post);
         return "blog-add";
     }
 
@@ -48,15 +56,37 @@ public class BlogController {
     @PostMapping("/add")
     public String blogPostAdd(
             @AuthenticationPrincipal User user,
-            @RequestParam String title,
-            @RequestParam String anons,
-            @RequestParam String fullText, Model model) {
+            @Valid Post post,
+            BindingResult bindingResult, // Должен идти перед аргументом Model
+            Model model) {
+
+        model.addAttribute("post",post);
 
 
-        Post post = new Post(title, anons, fullText, user);
-        postRepository.save(post);
+
+        if (bindingResult.hasErrors()){
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+
+            model.mergeAttributes(errorsMap);
+
+            System.out.println(errorsMap);
+
+
+
+            return "blog-add";
+
+        } else {
+            post.setAuthor(user);
+
+            postRepository.save(post);
+        }
+
+
+
         return "redirect:/blog";
     }
+
+
 
 
     @GetMapping("/{id}")
