@@ -65,6 +65,10 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+    
     public void addUser(User user){
         if (findUsername(user)){
             return;
@@ -110,10 +114,6 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
 
         return true;
-    }
-
-    public List<User> findAll() {
-        return userRepository.findAll();
     }
 
     public void userSave(User user, Map<String, String> form) {
