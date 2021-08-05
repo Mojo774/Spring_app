@@ -43,7 +43,6 @@ public class ProfileController {
             model.addAttribute("email", user.getEmail());
             return "profile";
         } else {
-            System.out.println("d");
             model.addAttribute("message", "Вы ввели неправильный пароль");
             model.addAttribute("username",user.getUsername());
             model.addAttribute("email", user.getEmail());

@@ -4,11 +4,13 @@ import com.example.demo.models.Role;
 import com.example.demo.models.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -21,6 +23,10 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
     @Autowired
     private MailSender mailSender;
+    @Qualifier("getPasswordEncoder")
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -78,6 +84,8 @@ public class UserService implements UserDetailsService {
         user.setRoles(Collections.singleton(Role.USER));
         // генерируем код UUID
         user.setActivationCode(UUID.randomUUID().toString());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
 
         userRepository.save(user);
 
@@ -134,7 +142,9 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean updateProfile(User user, String password, String email, String oldPassword) {
-        if (!oldPassword.equals(user.getPassword()))
+
+        // Проверка старого пароля для сохранения изменений
+        if (!passwordEncoder.matches(oldPassword,user.getPassword()))
             return false;
 
         String oldEmail = user.getEmail();
@@ -148,7 +158,7 @@ public class UserService implements UserDetailsService {
         }
 
         if (isPasswordChanged){
-            user.setNewPassword(password);
+            user.setNewPassword(passwordEncoder.encode(password));
         }
 
         if (userChanged) {
