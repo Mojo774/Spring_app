@@ -5,6 +5,7 @@ import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,43 +18,6 @@ import java.util.Map;
 public class RegistrationController {
     @Autowired
     private UserService userService;
-
-    /*@GetMapping("/login")
-    public String login(Model model){
-        User user = new User();
-        model.addAttribute("user",user);
-        return "registration";
-    }
-
-    @PostMapping("/login")
-    public String loginUser(@Valid User user, BindingResult bindingResult, Model model){
-
-        model.addAttribute("user",user);
-
-        if (bindingResult.hasErrors()){
-            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
-
-            if (userService.findEmail(user)) {
-                errorsMap.put("newEmailError","пользователь с такой почтой уже существует");
-            }
-
-
-            if (userService.findUsername(user)) {
-                errorsMap.put("usernameError", "пользователь с таким именем уже существует");
-            }
-
-            model.mergeAttributes(errorsMap);
-
-
-            return "registration";
-
-        } else {
-
-            userService.addUser(user);
-
-            return "home";
-        }
-    }*/
 
     @GetMapping("/registration")
     public String registration(Model model){
@@ -70,17 +34,20 @@ public class RegistrationController {
         if (bindingResult.hasErrors()){
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
-            if (userService.findEmail(user)) {
+            if (userService.findEmailFromDB(user.getNewEmail())) {
                 errorsMap.put("newEmailError","пользователь с такой почтой уже существует");
             }
 
-
-            if (userService.findUsername(user)) {
+            if (userService.findUsernameFromDB(user.getUsername())) {
                 errorsMap.put("usernameError", "пользователь с таким именем уже существует");
             }
 
             if (!user.getPassword().equals(passwordCheck)){
                 errorsMap.put("passwordCheckError", "пароли не совпадают");
+            }
+
+            if (StringUtils.isEmpty(user.getNewEmail())) {
+                errorsMap.put("newEmailError","Email cannot be empty");
             }
 
             model.mergeAttributes(errorsMap);

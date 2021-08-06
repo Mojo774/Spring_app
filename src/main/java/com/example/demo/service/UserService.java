@@ -5,8 +5,6 @@ import com.example.demo.models.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -51,8 +49,8 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public boolean findEmail(User user){
-        User userFromDb = userRepository.findByEmail(user.getNewEmail());
+    public boolean findEmailFromDB(String email){
+        User userFromDb = userRepository.findByEmail(email);
 
         if (userFromDb == null){
             return false;
@@ -61,8 +59,8 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public boolean findUsername(User user){
-        User userFromDb = userRepository.findByUsername(user.getUsername());
+    public boolean findUsernameFromDB(String username){
+        User userFromDb = userRepository.findByUsername(username);
 
         if (userFromDb == null){
             return false;
@@ -76,7 +74,7 @@ public class UserService implements UserDetailsService {
     }
     
     public void addUser(User user){
-        if (findUsername(user)){
+        if (findUsernameFromDB(user.getUsername())){
             return;
         }
 

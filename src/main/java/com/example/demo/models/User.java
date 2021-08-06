@@ -36,7 +36,6 @@ public class User implements UserDetails{
     private String newPassword;
 
     @Email(message = "Email is not correct")
-    @NotBlank(message = "Email cannot be empty")
     private String newEmail;
 
     // EAGER (жадный) - подгружает данные (роли) сразу
