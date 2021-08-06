@@ -63,7 +63,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(@Valid User user, BindingResult bindingResult, Model model){
+    public String addUser(@Valid User user, BindingResult bindingResult, Model model, String passwordCheck){
 
         model.addAttribute("user",user);
 
@@ -79,8 +79,11 @@ public class RegistrationController {
                 errorsMap.put("usernameError", "пользователь с таким именем уже существует");
             }
 
-            model.mergeAttributes(errorsMap);
+            if (!user.getPassword().equals(passwordCheck)){
+                errorsMap.put("passwordCheckError", "пароли не совпадают");
+            }
 
+            model.mergeAttributes(errorsMap);
 
             return "registration";
 

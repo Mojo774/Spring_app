@@ -61,7 +61,19 @@
         <label> Password: <input type="password" name="password"/> </label>
     </div>
 
+    <!--password-->
+    <div th:if="${passwordCheckError != null}">
+        <label> Confirm password :
+            <input class="form-control is-invalid" type="password" name="passwordCheck"/>
+            <div th:text="${passwordCheckError}" class="invalid-feedback">
 
+            </div>
+        </label>
+
+    </div>
+    <div th:unless="${passwordCheckError != null}">
+        <label> Confirm password : <input type="password" name="passwordCheck"/> </label>
+    </div>
 
 
     <div><input type="submit" value="Зарегистрироваться"/></div>
