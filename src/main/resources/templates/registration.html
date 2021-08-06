@@ -18,13 +18,56 @@
     You have been logged out.
 </div>
 <form th:action="@{/registration}" method="post">
-    <div><label> User Name : <input type="text" name="username"/> </label></div>
-    <div><label> Email: <input type="email" name="newEmail" placeholder="some@some.com"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
+
+    <!--username-->
+    <div th:if="${usernameError != null}">
+        <label> User Name :
+            <input class="form-control is-invalid" th:value="${user.getUsername()}" type="text" name="username"/>
+            <div th:text="${usernameError}" class="invalid-feedback">
+
+            </div>
+        </label>
+
+    </div>
+    <div th:unless="${usernameError != null}">
+        <label> User Name : <input th:value="${user.getUsername()}" type="text" name="username"/> </label>
+    </div>
+
+    <!--email-->
+    <div th:if="${newEmailError != null}">
+        <label> Email:
+            <input class="form-control is-invalid" th:value="${user.getNewEmail()}" type="email" name="newEmail" placeholder="some@some.com"/>
+            <div th:text="${newEmailError}" class="invalid-feedback">
+
+            </div>
+        </label>
+
+    </div>
+    <div th:unless="${newEmailError != null}">
+        <label> Email: <input th:value="${user.getNewEmail()}"  type="email" name="newEmail" placeholder="some@some.com"/> </label>
+    </div>
+
+    <!--password-->
+    <div th:if="${passwordError != null}">
+        <label> Password:
+            <input class="form-control is-invalid" type="password" name="password"/>
+            <div th:text="${passwordError}" class="invalid-feedback">
+
+            </div>
+        </label>
+
+    </div>
+    <div th:unless="${passwordError != null}">
+        <label> Password: <input type="password" name="password"/> </label>
+    </div>
+
+
+
+
     <div><input type="submit" value="Зарегистрироваться"/></div>
 </form>
 
-<h4 th:text="${message}"></h4>
+
 
 <div th:insert="blocks/footer :: footer"></div>
 

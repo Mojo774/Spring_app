@@ -69,10 +69,6 @@ public class BlogController {
 
             model.mergeAttributes(errorsMap);
 
-            System.out.println(errorsMap);
-
-
-
             return "blog-add";
 
         } else {

@@ -27,14 +27,16 @@ public class User implements UserDetails{
 
     private boolean active;
 
-    @Email(message = "Email is not correct")
-    @NotBlank(message = "Email cannot be empty")
+
     private String email;
 
     private String activationCode;
 
     // Заменяют основной после активации с почты
     private String newPassword;
+
+    @Email(message = "Email is not correct")
+    @NotBlank(message = "Email cannot be empty")
     private String newEmail;
 
     // EAGER (жадный) - подгружает данные (роли) сразу
