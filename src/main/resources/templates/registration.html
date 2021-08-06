@@ -36,7 +36,8 @@
     <!--email-->
     <div th:if="${newEmailError != null}">
         <label> Email:
-            <input class="form-control is-invalid" th:value="${user.getNewEmail()}" type="email" name="newEmail" placeholder="some@some.com"/>
+            <input class="form-control is-invalid" th:value="${user.getNewEmail()}" type="email" name="newEmail"
+                   placeholder="some@some.com"/>
             <div th:text="${newEmailError}" class="invalid-feedback">
 
             </div>
@@ -44,7 +45,8 @@
 
     </div>
     <div th:unless="${newEmailError != null}">
-        <label> Email: <input th:value="${user.getNewEmail()}"  type="email" name="newEmail" placeholder="some@some.com"/> </label>
+        <label> Email: <input th:value="${user.getNewEmail()}" type="email" name="newEmail"
+                              placeholder="some@some.com"/> </label>
     </div>
 
     <!--password-->
@@ -76,9 +78,13 @@
     </div>
 
 
+    <div class="g-recaptcha" data-sitekey="6LdyLOMbAAAAAJuMODqqRxRyVWoFtxYn3MTsdXhW"></div>
+    <div th:if="${captchaError != null}" th:text="${captchaError}" class="alert alert-danger" role="alert">
+
+    </div>
+
     <div><input type="submit" value="Зарегистрироваться"/></div>
 </form>
-
 
 
 <div th:insert="blocks/footer :: footer"></div>
