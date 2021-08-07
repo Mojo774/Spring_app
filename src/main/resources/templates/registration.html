@@ -19,70 +19,65 @@
 </div>
 <form th:action="@{/registration}" method="post">
 
+
     <!--username-->
-    <div th:if="${usernameError != null}">
-        <label> User Name :
-            <input class="form-control is-invalid" th:value="${user.getUsername()}" type="text" name="username"/>
-            <div th:text="${usernameError}" class="invalid-feedback">
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="username">User name : </span>
+        <input th:class="${usernameError != null} ? 'form-control is-invalid' : 'form-control'"
+               th:value="${user.getUsername()}"
+               type="text" name="username" maxlength="20"
+               aria-label="Username" aria-describedby="username"/>
 
-            </div>
-        </label>
+        <div th:if="${usernameError != null}" th:text="${usernameError}" class="invalid-feedback">
 
+        </div>
     </div>
-    <div th:unless="${usernameError != null}">
-        <label> User Name : <input th:value="${user.getUsername()}" type="text" name="username"/> </label>
-    </div>
+
 
     <!--email-->
-    <div th:if="${newEmailError != null}">
-        <label> Email:
-            <input class="form-control is-invalid" th:value="${user.getNewEmail()}" type="email" name="newEmail"
-                   placeholder="some@some.com"/>
-            <div th:text="${newEmailError}" class="invalid-feedback">
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="email">Email : </span>
+        <input th:class="${newEmailError != null} ? 'form-control is-invalid' : 'form-control'"
+               th:value="${user.getNewEmail()}"
+               type="email" name="newEmail" maxlength="50"
+               aria-label="Username" aria-describedby="email"
+               placeholder="some@some.com"/>
 
-            </div>
-        </label>
+        <div th:if="${newEmailError != null}" th:text="${newEmailError}" class="invalid-feedback">
 
-    </div>
-    <div th:unless="${newEmailError != null}">
-        <label> Email: <input th:value="${user.getNewEmail()}" type="email" name="newEmail"
-                              placeholder="some@some.com"/> </label>
+        </div>
     </div>
 
     <!--password-->
-    <div th:if="${passwordError != null}">
-        <label> Password:
-            <input class="form-control is-invalid" type="password" name="password"/>
-            <div th:text="${passwordError}" class="invalid-feedback">
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="password">Password : </span>
+        <input th:class="${passwordError != null} ? 'form-control is-invalid' : 'form-control'"
+               type="password" name="password" maxlength="100"
+               aria-label="Username" aria-describedby="password"/>
 
-            </div>
-        </label>
+        <div th:if="${passwordError != null}" th:text="${passwordError}" class="invalid-feedback">
 
-    </div>
-    <div th:unless="${passwordError != null}">
-        <label> Password: <input type="password" name="password"/> </label>
+        </div>
     </div>
 
-    <!--password-->
-    <div th:if="${passwordCheckError != null}">
-        <label> Confirm password :
-            <input class="form-control is-invalid" type="password" name="passwordCheck"/>
-            <div th:text="${passwordCheckError}" class="invalid-feedback">
+    <!--Confirm password-->
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="confirm-password">Confirm password : </span>
+        <input th:class="${passwordCheckError != null} ? 'form-control is-invalid' : 'form-control'"
+               type="password" name="passwordCheck" maxlength="100"
+               aria-label="Username" aria-describedby="confirm-password"/>
 
-            </div>
-        </label>
+        <div th:if="${passwordCheckError != null}" th:text="${passwordCheckError}" class="invalid-feedback">
 
-    </div>
-    <div th:unless="${passwordCheckError != null}">
-        <label> Confirm password : <input type="password" name="passwordCheck"/> </label>
+        </div>
     </div>
 
+    <div>
+        <div class="g-recaptcha" data-sitekey="6LdyLOMbAAAAAJuMODqqRxRyVWoFtxYn3MTsdXhW"></div>
+        <div th:if="${captchaError != null}" th:text="${captchaError}" class="alert alert-danger" role="alert">
 
-    <div class="g-recaptcha" data-sitekey="6LdyLOMbAAAAAJuMODqqRxRyVWoFtxYn3MTsdXhW"></div>
-    <div th:if="${captchaError != null}" th:text="${captchaError}" class="alert alert-danger" role="alert">
-
+        </div>
     </div>
-
     <div><input type="submit" value="Зарегистрироваться"/></div>
 </form>
 
