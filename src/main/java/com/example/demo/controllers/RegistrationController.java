@@ -52,33 +52,28 @@ public class RegistrationController {
         CaptchaResponseDto response = restTemplate.
                 postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
 
-
-
         model.addAttribute("user",user);
 
+        Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+        // Возможные ошибки в полях при регистрации
+        if (userService.findEmailFromDB(user.getNewEmail())) {
+            errorsMap.put("newEmailError","пользователь с такой почтой уже существует");
+        }
+        if (StringUtils.isEmpty(user.getNewEmail())) {
+            errorsMap.put("newEmailError","Email cannot be empty");
+        }
+        if (userService.findUsernameFromDB(user.getUsername())) {
+            errorsMap.put("usernameError", "пользователь с таким именем уже существует");
+        }
+        if (!user.getPassword().equals(passwordCheck)){
+            errorsMap.put("passwordCheckError", "пароли не совпадают");
+        }
+        if (!response.isSuccess()){
+            errorsMap.put("captchaError","Fill captcha");
+        }
 
-        if (bindingResult.hasErrors() || !response.isSuccess()){
-            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
-            if (userService.findEmailFromDB(user.getNewEmail())) {
-                errorsMap.put("newEmailError","пользователь с такой почтой уже существует");
-            }
-
-            if (userService.findUsernameFromDB(user.getUsername())) {
-                errorsMap.put("usernameError", "пользователь с таким именем уже существует");
-            }
-
-            if (!user.getPassword().equals(passwordCheck)){
-                errorsMap.put("passwordCheckError", "пароли не совпадают");
-            }
-
-            if (StringUtils.isEmpty(user.getNewEmail())) {
-                errorsMap.put("newEmailError","Email cannot be empty");
-            }
-
-            if (!response.isSuccess()){
-                errorsMap.put("captchaError","Fill captcha");
-            }
+        if (!errorsMap.isEmpty() || !response.isSuccess()){
 
             model.mergeAttributes(errorsMap);
 
@@ -86,23 +81,19 @@ public class RegistrationController {
 
         } else {
 
-
             userService.addUser(user);
 
             return "redirect:/login";
         }
     }
 
+
+
     @GetMapping("/activate/{code}")
     public String activate(Model model, @PathVariable String code){
-        boolean isActivated = userService.activateUser(code);
+        String message = userService.activateUser(code);
 
-        if (isActivated){
-            model.addAttribute("message", "User successfully activated");
-
-        } else {
-            model.addAttribute("message", "Activation code is not found");
-        }
+        model.addAttribute("message", message);
 
         return "login";
     }

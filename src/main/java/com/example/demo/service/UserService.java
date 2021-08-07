@@ -79,7 +79,7 @@ public class UserService implements UserDetailsService {
         }
 
         user.setActive(false);
-        user.setRoles(Collections.singleton(Role.USER));
+
         // генерируем код UUID
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -98,12 +98,19 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public boolean activateUser(String code) {
+    public String activateUser(String code) {
         User user = userRepository.findByActivationCode(code);
 
         if (user == null){
-            return false;
+            return "Activation code is not found";
         }
+
+        if (!isEmailFree(user,user.getNewEmail())){
+            return "Пользователь с такой почтой уже зарегистрирован";
+        }
+
+        // Устанавливаем роль
+        user.setRoles(Collections.singleton(Role.USER));
 
         // Заменяем пароль и почту новыми, если они есть
         if (user.getNewEmail() != null){
@@ -119,7 +126,7 @@ public class UserService implements UserDetailsService {
         user.setActive(true);
         userRepository.save(user);
 
-        return true;
+        return "User successfully activated";
     }
 
     public void userSave(User user, Map<String, String> form) {
@@ -135,12 +142,11 @@ public class UserService implements UserDetailsService {
             }
         }
 
-        System.out.println(form.toString());
+
         userRepository.save(user);
     }
 
     public boolean updateProfile(User user, String password, String email, String oldPassword) {
-
         // Проверка старого пароля для сохранения изменений
         if (!passwordEncoder.matches(oldPassword,user.getPassword()))
             return false;
@@ -182,4 +188,15 @@ public class UserService implements UserDetailsService {
     }
 
 
+    public boolean isEmailFree(User user, String email) {
+        User userFromBb = userRepository.findByEmail(email);
+
+        if (userFromBb == null)
+            return true;
+
+        if (userFromBb.equals(user))
+            return true;
+
+        return false;
+    }
 }
