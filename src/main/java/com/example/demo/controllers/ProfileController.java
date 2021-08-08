@@ -18,7 +18,7 @@ public class ProfileController {
 
     @GetMapping("/profile")
     public String getProfile(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("username",user.getUsername());
+        model.addAttribute("username", user.getUsername());
         model.addAttribute("email", user.getEmail());
 
 
@@ -32,28 +32,15 @@ public class ProfileController {
             @RequestParam String email,
             @RequestParam String oldPassword,
             Model model
-            ) {
+    ) {
 
 
-        if (!userService.isEmailFree(user,email)){
-            model.addAttribute("message", "Пользователь с такой почтой уже зарегистрирован");
-            model.addAttribute("username",user.getUsername());
-            model.addAttribute("email", user.getEmail());
-            return "profile";
-        }
+        String message = userService.updateProfile(user, password, email, oldPassword);
 
-        if (userService.updateProfile(user, password, email, oldPassword)){
-            model.addAttribute("message", "Подтвердите изменения на почте");
-            model.addAttribute("username",user.getUsername());
-            model.addAttribute("email", user.getEmail());
-            return "profile";
-        } else {
-            model.addAttribute("message", "Вы ввели неправильный пароль");
-            model.addAttribute("username",user.getUsername());
-            model.addAttribute("email", user.getEmail());
-            return "profile";
-        }
-
+        model.addAttribute("message", message);
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("email", user.getEmail());
+        return "profile";
 
 
     }

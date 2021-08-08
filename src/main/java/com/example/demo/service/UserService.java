@@ -31,10 +31,9 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByUsername(username);
 
 
-        if(user == null) {
+        if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-
 
 
         return user;
@@ -42,27 +41,27 @@ public class UserService implements UserDetailsService {
     }
 
     private void sendMessage(String email, String message) {
-        if (!StringUtils.isEmpty(email)){
+        if (!StringUtils.isEmpty(email)) {
             // Ссылку можно вынести в пропиртис
 
-            mailSender.send(email,"Activation code", message);
+            mailSender.send(email, "Activation code", message);
         }
     }
 
-    public boolean findEmailFromDB(String email){
+    public boolean findEmailFromDB(String email) {
         User userFromDb = userRepository.findByEmail(email);
 
-        if (userFromDb == null){
+        if (userFromDb == null) {
             return false;
         }
 
         return true;
     }
 
-    public boolean findUsernameFromDB(String username){
+    public boolean findUsernameFromDB(String username) {
         User userFromDb = userRepository.findByUsername(username);
 
-        if (userFromDb == null){
+        if (userFromDb == null) {
             return false;
         }
 
@@ -72,9 +71,9 @@ public class UserService implements UserDetailsService {
     public List<User> findAll() {
         return userRepository.findAll();
     }
-    
-    public void addUser(User user){
-        if (findUsernameFromDB(user.getUsername())){
+
+    public void addUser(User user) {
+        if (findUsernameFromDB(user.getUsername())) {
             return;
         }
 
@@ -101,11 +100,11 @@ public class UserService implements UserDetailsService {
     public String activateUser(String code) {
         User user = userRepository.findByActivationCode(code);
 
-        if (user == null){
+        if (user == null) {
             return "Activation code is not found";
         }
 
-        if (!isEmailFree(user,user.getNewEmail())){
+        if (user.getNewEmail()!=null && !isEmailFree(user, user.getNewEmail())) {
             return "Пользователь с такой почтой уже зарегистрирован";
         }
 
@@ -113,11 +112,11 @@ public class UserService implements UserDetailsService {
         user.setRoles(Collections.singleton(Role.USER));
 
         // Заменяем пароль и почту новыми, если они есть
-        if (user.getNewEmail() != null){
+        if (user.getNewEmail() != null) {
             user.setEmail(user.getNewEmail());
             user.setNewEmail(null);
         }
-        if (user.getNewPassword() != null){
+        if (user.getNewPassword() != null) {
             user.setPassword(user.getNewPassword());
             user.setNewPassword(null);
         }
@@ -136,8 +135,8 @@ public class UserService implements UserDetailsService {
 
         user.getRoles().clear();
 
-        for (String key: form.keySet()){
-            if (roles.contains(key)){
+        for (String key : form.keySet()) {
+            if (roles.contains(key)) {
                 user.getRoles().add(Role.valueOf(key));
             }
         }
@@ -146,45 +145,55 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public boolean updateProfile(User user, String password, String email, String oldPassword) {
+    public String updateProfile(User user, String password, String email, String oldPassword) {
         // Проверка старого пароля для сохранения изменений
-        if (!passwordEncoder.matches(oldPassword,user.getPassword()))
-            return false;
+        if (!passwordEncoder.matches(oldPassword, user.getPassword()))
+            return "Вы ввели неправильный пароль";
+
+        if (!isEmailFree(user, email)) {
+            return "Пользователь с такой почтой уже зарегистрирован";
+        }
 
         String oldEmail = user.getEmail();
-        boolean isEmailChanged = (!StringUtils.isEmpty(email) && !email.equals(oldEmail));
-        boolean isPasswordChanged = !StringUtils.isEmpty(password);
+
+        boolean isEmailChanged = (!StringUtils.isEmpty(email) &&
+                !email.equals(oldEmail));
+        boolean isPasswordChanged = !StringUtils.isEmpty(password) &&
+                !passwordEncoder.matches(password, user.getPassword());
 
         boolean userChanged = isEmailChanged || isPasswordChanged;
 
-        if (isEmailChanged){
+        if (!userChanged) {
+            return "Изменения не добавлены";
+        }
+
+        if (isEmailChanged) {
             user.setNewEmail(email);
         }
 
-        if (isPasswordChanged){
+        if (isPasswordChanged) {
             user.setNewPassword(passwordEncoder.encode(password));
         }
 
-        if (userChanged) {
 
-            user.setActivationCode(UUID.randomUUID().toString());
-            userRepository.save(user);
+        user.setActivationCode(UUID.randomUUID().toString());
+        userRepository.save(user);
 
-            String message = String.format(
-                    "Hello, %s \n" +
-                            "Confirm profile changes. Please , visit next link: http://localhost:8080/activate/%s",
-                    user.getUsername(),
-                    user.getActivationCode()
-            );
+        String message = String.format(
+                "Hello, %s \n" +
+                        "Confirm profile changes. Please , visit next link: http://localhost:8080/activate/%s",
+                user.getUsername(),
+                user.getActivationCode()
+        );
 
-            if (isEmailChanged) {
-                sendMessage(email, message);
-            } else {
-                sendMessage(oldEmail, message);
-            }
-
+        if (isEmailChanged) {
+            sendMessage(email, message);
+        } else {
+            sendMessage(oldEmail, message);
         }
-        return true;
+
+        return String.format("Подтвердите изменения на почте %s", user.getEmail());
+
     }
 
 

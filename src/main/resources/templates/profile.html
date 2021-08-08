@@ -12,23 +12,68 @@
 <h1>Мой профиль</h1>
 <h4 th:text="'My name: ' + ${username}"></h4>
 
-<form th:action="@{/profile}" method="post">
-    <div><label> Email: <input type="email" name="email" placeholder="some@some.com"/> </label></div>
-    <h5 th:text="'Ваша текущая почта ' + ${email}"></h5>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
 
-    <h5>Введите старый пароль чтобы сохранить</h5>
-    <div><label> Password: <input type="password" name="oldPassword"/> </label></div>
-    <div><h5 th:text="${message}"></h5></div>
-    <div><input type="submit" value="Save"/></div>
+
+<form th:action="@{/profile}" method="post">
+
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="email-input">Новый Email : </span>
+
+        <input class="form-control"
+               type="email" name="email" placeholder="some@some.com"
+               aria-label="Email" aria-describedby="email-input"/>
+    </div>
+
+    <div class="badge bg-primary fs-4" style="width: 55rem;">
+        <a th:text="'Ваша текущая почта ' + ${email}"></a>
+    </div>
+    <br>
+    <br>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="password-input">Новый пароль : </span>
+
+        <input class="form-control"
+               type="password" name="password" maxlength="100"
+               aria-label="Password" aria-describedby="password-input"/>
+
+    </div>
+
+
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="oldPassword-input">Введите старый пароль чтобы сохранить : </span>
+
+        <input class="form-control"
+               type="password" name="oldPassword" maxlength="100"
+               aria-label="Password" aria-describedby="oldPassword-input"/>
+
+    </div>
+
+
+
+    <div th:if="${message != null}" class="badge bg-danger fs-4" style="width: 55rem;">
+        <a th:text="${message}"></a>
+    </div>
+
+    <br>
+    <br>
+    <div>
+        <button type="submit" class="btn btn-outline-primary">Сохранить</button>
+    </div>
+
 </form>
 
-
+<br>
 <div sec:authorize="hasAuthority('ADMIN')">
-        <h4><a href="/user">Список пользователей</a></h4>
+    <a href="/user" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Список пользователей</a>
 </div>
 
-<h4><a href="/logout">Выйти</a></h4>
+<br>
+<div>
+    <a href="/logout" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Выйти</a>
+
+</div>
+
 
 <div th:insert="blocks/footer :: footer"></div>
 
