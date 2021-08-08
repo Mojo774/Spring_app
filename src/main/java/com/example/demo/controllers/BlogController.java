@@ -27,7 +27,7 @@ public class BlogController {
     @Autowired
     private PostRepository postRepository;
 
-    @GetMapping
+    @GetMapping()
     public String blogMain(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
 
         Iterable<Post> posts;
@@ -38,10 +38,18 @@ public class BlogController {
         } else {
             posts = postRepository.findAll();
         }
+
+
         model.addAttribute("posts", posts);
         model.addAttribute("filter", filter);
 
 
+        return "blog-main";
+    }
+
+    @GetMapping(params = "clear")
+    public String clear(Model model){
+        blogMain("",model);
         return "blog-main";
     }
 
@@ -143,4 +151,6 @@ public class BlogController {
 
         return "redirect:/blog";
     }
+
+
 }

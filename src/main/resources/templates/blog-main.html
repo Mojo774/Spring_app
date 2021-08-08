@@ -10,21 +10,32 @@
 <header th:insert="blocks/header :: header"></header>
 
 <form method="get" action="/blog">
-    <input type="text" name="filter" th:value="${filter}">
-    <button type="submit">Найти блог</button>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="filter-input">Введите поисковой запрос : </span>
+
+        <input class="form-control"
+               type="text" name="filter" th:value="${filter}"
+               aria-label="Password" aria-describedby="filter-input"/>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary" name="find">Найти блог</button>
+
+    <button type="submit" class="btn btn-primary" name="clear">Очистить</button>
 </form>
+
 
 
 <div class="container mt-5">
     <h>Блог сайта</h>
-    <div th:each="element : ${posts}" class="alert alert-info mt-2">
-        <h3 th:text="${element.title}" />
+    <div th:each="element : ${posts}" class="alert alert-primary mt-2">
+        <h3 th:text="${element.title}"/>
         <p th:text="${element.anons}"/>
-        <p> <b>Автор</b>  <span  th:text="${element.getAuthor().getUsername()}" /> </p>
+        <p><b>Автор</b> <span th:text="${element.getAuthor().getUsername()}"/></p>
         <a th:href="'/blog/' + ${element.id}" class="btn btn-warning">Детальнее</a>
     </div>
 </div>
-
 
 
 <div th:insert="blocks/footer :: footer"></div>
