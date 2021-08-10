@@ -48,15 +48,15 @@ public class BlogController {
     }
 
     @GetMapping(params = "clear")
-    public String clear(Model model){
-        blogMain("",model);
+    public String clear(Model model) {
+        blogMain("", model);
         return "blog-main";
     }
 
     @GetMapping("/add")
     public String blogAdd(Model model) {
         Post post = new Post();
-        model.addAttribute("post",post);
+        model.addAttribute("post", post);
         return "blog-add";
     }
 
@@ -68,12 +68,12 @@ public class BlogController {
             BindingResult bindingResult, // Должен идти перед аргументом Model
             Model model) {
 
-        model.addAttribute("post",post);
+        model.addAttribute("post", post);
 
+        Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
+        if (!errorsMap.isEmpty()) {
 
-        if (bindingResult.hasErrors()){
-            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             model.mergeAttributes(errorsMap);
 
@@ -83,14 +83,11 @@ public class BlogController {
             post.setAuthor(user);
 
             postRepository.save(post);
+
+            return "redirect:/blog";
         }
 
-
-
-        return "redirect:/blog";
     }
-
-
 
 
     @GetMapping("/{id}")
@@ -106,8 +103,7 @@ public class BlogController {
         model.addAttribute("post", res);
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        model.addAttribute("currentUser",user);
-
+        model.addAttribute("currentUser", user);
 
 
         return "blog-details";
@@ -120,26 +116,67 @@ public class BlogController {
         }
 
         Optional<Post> post = postRepository.findById(id);
-        // С list проще работать чем с optinal
-        ArrayList<Post> res = new ArrayList<>();
-        post.ifPresent(res::add);
-        model.addAttribute("post", res);
+        /*// С list проще работать чем с optinal
 
+
+        ArrayList<Post> res = new ArrayList<>();
+
+        post.ifPresent(res::add);
+        model.addAttribute("posts", res);*/
+        model.addAttribute("post",post.get());
 
         return "blog-edit";
     }
 
 
+    /*@PostMapping("/{id}/edit")
+    public String blogPostUpdate(
+            @Valid Post post,
+            @PathVariable(value = "id") long id,
+            @RequestParam String title,
+            @RequestParam String anons,
+            @RequestParam String fullText,
+            BindingResult bindingResult,
+            Model model) {
+
+
+
+        Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+
+        if (!errorsMap.isEmpty()) {
+            model.mergeAttributes(errorsMap);
+
+            return blogEdit(post.getId(),model);
+        } else {
+            postRepository.save(post);
+            return "redirect:/blog";
+        }
+
+    }*/
+
     @PostMapping("/{id}/edit")
-    public String blogPostUpdate(@PathVariable(value = "id") long id, @RequestParam String title, @RequestParam String anons, @RequestParam String fullText, Model model) {
+    public String blogPostUpdate(
+            @PathVariable(value = "id") long id,
+            @Valid Post post,
+            BindingResult bindingResult,
+            Model model) {
 
-        Post post = postRepository.findById(id).orElseThrow();
-        post.setTitle(title);
-        post.setAnons(anons);
-        post.setFullText(fullText);
+        Post originalPost = postRepository.findById(id).orElseThrow();
 
-        postRepository.save(post);
-        return "redirect:/blog";
+        Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+
+        if (!errorsMap.isEmpty()) {
+            model.mergeAttributes(errorsMap);
+
+            return "blog-edit";
+        } else {
+            originalPost.setTitle(post.getTitle());
+            originalPost.setAnons(post.getAnons());
+            originalPost.setFullText(post.getFullText());
+
+            postRepository.save(originalPost);
+            return "redirect:/blog";
+        }
     }
 
     @PostMapping("/{id}/remove")

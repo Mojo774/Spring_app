@@ -16,51 +16,52 @@
     <form action="/blog/add" method="post">
 
 
-        <div th:if="${titleError != null}">
-            <input type="text" class="form-control is-invalid" th:value="${post.getTitle()}" name="title"
+        <div >
+            <input th:class="${titleError != null} ? 'form-control is-invalid' : 'form-control'"
+                   th:value="${post.getTitle()}"
+                   name="title" type="text"
                    placeholder="Введите название статьи">
 
-            <div th:text="${titleError}" class="invalid-feedback">
+            <div th:if="${titleError != null}" th:text="${titleError}" class="invalid-feedback">
 
             </div>
 
         </div>
-        <div th:unless="${titleError != null}">
-            <input type="text" class="form-control" th:value="${post.getTitle()}" name="title" placeholder="Введите название статьи">
-        </div>  <br>
 
+        <br>
 
+        <div>
 
-        <div th:if="${anonsError != null}">
-
-            <input type="text" class="form-control is-invalid" th:value="${post.getAnons()}" name="anons"
+            <input th:class="${anonsError != null} ? 'form-control is-invalid' : 'form-control'"
+                   th:value="${post.getAnons()}"
+                   name="anons" type="text"
                    placeholder="Введите анонс статьи">
-            <div th:text="${anonsError}" class="invalid-feedback">
+            <div th:if="${anonsError != null}" th:text="${anonsError}" class="invalid-feedback">
 
             </div>
 
         </div>
-        <div th:unless="${anonsError != null}">
-            <input type="text" class="form-control" th:value="${post.getAnons()}" name="anons" placeholder="Введите анонс статьи">
-        </div>  <br>
 
+        <br>
 
+        <div class="input-group">
+            <span class="input-group-text">Текст</span>
 
-        <div th:if="${fullTextError != null}">
-            <input type="text" class="form-control is-invalid" th:value="${post.getFullText()}" name="fullText"
-                   placeholder="Введите текст статьи">
-
-            <div th:text="${fullTextError}" class="invalid-feedback">
+            <textarea
+                    th:class="${fullTextError != null} ? 'form-control is-invalid' : 'form-control'"
+                    th:text="${post.getFullText()}"
+                    name="fullText" type="text"
+                    placeholder="Введите текст статьи" aria-label="With textarea"></a></textarea>
+            <div th:if="${fullTextError != null}" th:text="${fullTextError}" class="invalid-feedback">
 
             </div>
         </div>
-        <div th:unless="${fullTextError != null}">
-            <input type="text" class="form-control" th:value="${post.getFullText()}" name="fullText" placeholder="Введите текст статьи">
-        </div>  <br>
 
+        <br><br>
 
-        <br><br><button type="submit" class="btn btn-success">Добавить статью</button>
-        <input type='hidden' value='${_csrf.token}' name='${_csrf.parameterName}'/>
+        <div>
+            <button type="submit" class="btn btn-outline-primary">Добавить статью</button>
+        </div>
     </form>
 
 </div>

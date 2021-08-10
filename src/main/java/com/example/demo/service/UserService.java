@@ -109,7 +109,10 @@ public class UserService implements UserDetailsService {
         }
 
         // Устанавливаем роль
-        user.setRoles(Collections.singleton(Role.USER));
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.USER);
+
+        user.setRoles(roles);
 
         // Заменяем пароль и почту новыми, если они есть
         if (user.getNewEmail() != null) {
@@ -123,7 +126,10 @@ public class UserService implements UserDetailsService {
 
         user.setActivationCode(null);
         user.setActive(true);
+
+
         userRepository.save(user);
+
 
         return "User successfully activated";
     }
