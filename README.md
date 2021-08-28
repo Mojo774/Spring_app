@@ -21,8 +21,13 @@
 ** Доступ к списку пользователей с возможностью их удаления
    (только для администратора)
    
+== Functionality
+
+* Visual representation of the product range
 * Customer's shopping cart
 ** selecting a product: add, delete, change a quantity
+** viewing the contents of the cart
+** placing an order
 
 Техническая составляющая
 ================================
