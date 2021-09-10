@@ -4,21 +4,20 @@ import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.Properties;
 
 @Controller
 @RequestMapping("/blog")
@@ -26,6 +25,8 @@ public class BlogController {
 
     @Autowired
     private PostRepository postRepository;
+
+
 
     @GetMapping()
     public String blogMain(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
@@ -129,30 +130,6 @@ public class BlogController {
     }
 
 
-    /*@PostMapping("/{id}/edit")
-    public String blogPostUpdate(
-            @Valid Post post,
-            @PathVariable(value = "id") long id,
-            @RequestParam String title,
-            @RequestParam String anons,
-            @RequestParam String fullText,
-            BindingResult bindingResult,
-            Model model) {
-
-
-
-        Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
-
-        if (!errorsMap.isEmpty()) {
-            model.mergeAttributes(errorsMap);
-
-            return blogEdit(post.getId(),model);
-        } else {
-            postRepository.save(post);
-            return "redirect:/blog";
-        }
-
-    }*/
 
     @PostMapping("/{id}/edit")
     public String blogPostUpdate(

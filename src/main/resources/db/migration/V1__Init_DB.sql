@@ -26,6 +26,12 @@ create table user_role (
     roles varchar(255)
 ) engine=MyISAM;
 
+create table user_subscriptions (
+    channel_id bigint not null references user,
+    subscriber_id bigint not null references user,
+    primary key (channel_id, subscriber_id)
+) engine=MyISAM;
+
 alter table post
     add constraint post_user_fk
     foreign key (user_id) references user (id);

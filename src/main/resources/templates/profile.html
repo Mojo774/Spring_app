@@ -69,6 +69,27 @@
 </div>
 
 <br>
+
+<div class="container mt-5">
+    <h>Подписчики</h>
+    <div th:each="user : ${subscribers}" class="alert alert-primary mt-2">
+        <h3 th:text="${user.getUsername()}"/>
+        <a th:href="'/blog/'" class="btn btn-warning">Профиль</a>
+    </div>
+</div>
+
+<br>
+
+<div class="container mt-5">
+    <h>Подписки</h>
+    <div th:each="user : ${subscriptions}" class="alert alert-primary mt-2">
+        <h3 th:text="${user.getUsername()}"/>
+        <a th:href="'/blog/'" class="btn btn-warning">Профиль</a>
+    </div>
+</div>
+
+<br>
+
 <div>
     <a href="/logout" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Выйти</a>
 
