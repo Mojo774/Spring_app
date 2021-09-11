@@ -13,7 +13,7 @@
     <div th:each="element : ${post}" class="alert alert-info mt-2">
         <h1 th:text="${element.title}"/>
         <p th:text="${element.fullText}"/>
-        <p><b>Автор</b> <span th:text="${element.getAuthor().getUsername()}"/></p>
+        <p><b>Автор </b><a th:href="'/profile/' + ${element.getAuthor().getId()}" th:text="${element.getAuthor().getUsername()}"></a></p>
         <p><b>Просмотры</b> <span th:text="${element.views}"/></p>
 
 

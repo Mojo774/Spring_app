@@ -68,6 +68,17 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
+    public User findIdFromDB(long id) {
+        User userFromDb = userRepository.findById(id);
+
+
+        return userFromDb;
+    }
+
+    public boolean existsById(long id) {
+        return userRepository.existsById(id);
+    }
+
     public List<User> findAll() {
         return userRepository.findAll();
     }

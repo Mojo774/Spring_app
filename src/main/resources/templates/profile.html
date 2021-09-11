@@ -9,12 +9,25 @@
 
 <header th:insert="blocks/header :: header"></header>
 
-<h1>Мой профиль</h1>
-<h4 th:text="'My name: ' + ${username}"></h4>
+<div th:switch="${userProfile.getId()}">
+
+    <div th:case="${user.getId()}">
+        <h1>Мой профиль</h1>
+        <h4 th:text="'My name: ' + ${userProfile.getUsername()}"></h4>
+    </div>
+
+    <div th:case="*">
+        <h1>Профиль</h1>
+        <h4 th:text="'Name: ' + ${userProfile.getUsername()}"></h4>
+    </div>
+
+</div>
 
 
 
-<form th:action="@{/profile}" method="post">
+
+
+<form th:if="${userProfile.getId()} == ${user.getId()}" th:action="@{/profile}" method="post">
 
     <div class="input-group mb-3">
         <span class="input-group-text" id="email-input">Новый Email : </span>
@@ -25,7 +38,7 @@
     </div>
 
     <div class="badge bg-primary fs-4" style="width: 55rem;">
-        <a th:text="'Ваша текущая почта ' + ${email}"></a>
+        <a th:text="'Ваша текущая почта ' + ${userProfile.getEmail()}"></a>
     </div>
     <br>
     <br>
@@ -60,40 +73,38 @@
     <div>
         <button type="submit" class="btn btn-outline-primary">Сохранить</button>
     </div>
-
+    <br>
+    <a href="/logout" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Выйти</a>
 </form>
 
 <br>
+
+<div class="container mt-5">
+    <h>Подписчики:</h>
+    <div th:each="us : ${userProfile.getSubscribers()}" class="alert alert-primary mt-2">
+        <h3 th:text="${us.getUsername()}"/>
+        <a th:href="'/blog/'" class="btn btn-warning">Профиль</a>
+    </div>
+</div>
+
+<br>
+
+<div class="container mt-5">
+    <h>Подписки:</h>
+    <div th:each="us : ${userProfile.getSubscriptions()}" class="alert alert-primary mt-2">
+        <h3 th:text="${us.getUsername()}"/>
+        <a th:href="'/blog/'" class="btn btn-warning">Профиль</a>
+    </div>
+</div>
+
+<br>
+
+
 <div sec:authorize="hasAuthority('ADMIN')">
     <a href="/user" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Список пользователей</a>
 </div>
 
-<br>
 
-<div class="container mt-5">
-    <h>Подписчики</h>
-    <div th:each="user : ${subscribers}" class="alert alert-primary mt-2">
-        <h3 th:text="${user.getUsername()}"/>
-        <a th:href="'/blog/'" class="btn btn-warning">Профиль</a>
-    </div>
-</div>
-
-<br>
-
-<div class="container mt-5">
-    <h>Подписки</h>
-    <div th:each="user : ${subscriptions}" class="alert alert-primary mt-2">
-        <h3 th:text="${user.getUsername()}"/>
-        <a th:href="'/blog/'" class="btn btn-warning">Профиль</a>
-    </div>
-</div>
-
-<br>
-
-<div>
-    <a href="/logout" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Выйти</a>
-
-</div>
 
 
 <div th:insert="blocks/footer :: footer"></div>
