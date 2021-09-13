@@ -19,15 +19,15 @@
     <div th:case="*">
         <h1>Профиль</h1>
         <h4 th:text="'Name: ' + ${userProfile.getUsername()}"></h4>
+
+        <a th:if="${!userProfile.getSubscriptions().contains(user)}" class="btn btn-info" th:href="'/profile/subscribe/' + ${userProfile.getId()}">Подписаться</a>
+        <a th:if="${userProfile.getSubscriptions().contains(user)}" class="btn btn-info" th:href="'/profile/unsubscribe/' + ${userProfile.getId()}">Отписаться</a>
     </div>
 
 </div>
 
 
-
-
-
-<form th:if="${userProfile.getId()} == ${user.getId()}" th:action="@{/profile}" method="post">
+<form th:if="${userProfile.getId()} == ${user.getId()}" th:action="'/profile/' + ${userProfile.getId()}" method="post">
 
     <div class="input-group mb-3">
         <span class="input-group-text" id="email-input">Новый Email : </span>
@@ -63,7 +63,6 @@
     </div>
 
 
-
     <div th:if="${message != null}" class="badge bg-danger fs-4" style="width: 55rem;">
         <a th:text="${message}"></a>
     </div>
@@ -83,7 +82,7 @@
     <h>Подписчики:</h>
     <div th:each="us : ${userProfile.getSubscribers()}" class="alert alert-primary mt-2">
         <h3 th:text="${us.getUsername()}"/>
-        <a th:href="'/blog/'" class="btn btn-warning">Профиль</a>
+        <a th:href="'/profile/'+ ${us.getId()}" class="btn btn-warning">Профиль</a>
     </div>
 </div>
 
@@ -93,7 +92,7 @@
     <h>Подписки:</h>
     <div th:each="us : ${userProfile.getSubscriptions()}" class="alert alert-primary mt-2">
         <h3 th:text="${us.getUsername()}"/>
-        <a th:href="'/blog/'" class="btn btn-warning">Профиль</a>
+        <a th:href="'/profile/'+ ${us.getId()}" class="btn btn-warning">Профиль</a>
     </div>
 </div>
 
@@ -103,8 +102,6 @@
 <div sec:authorize="hasAuthority('ADMIN')">
     <a href="/user" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Список пользователей</a>
 </div>
-
-
 
 
 <div th:insert="blocks/footer :: footer"></div>

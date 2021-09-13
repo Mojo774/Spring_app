@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
@@ -41,7 +38,7 @@ public class ProfileController {
         return "profile";
     }
 
-    @PostMapping("/profile")
+    @PostMapping("/profile/{id}")
     public String updateProfile(
             @AuthenticationPrincipal User user,
             @RequestParam String password,
@@ -50,14 +47,39 @@ public class ProfileController {
             Model model
     ) {
 
-
         String message = userService.updateProfile(user, password, email, oldPassword);
 
+
         model.addAttribute("message", message);
-        model.addAttribute("username", user.getUsername());
-        model.addAttribute("email", user.getEmail());
+        model.addAttribute("userProfile", user);
+        model.addAttribute("user",user);
+
         return "profile";
 
 
+    }
+
+
+    // TODO: заменить id на user в параметрах
+
+    @GetMapping("profile/subscribe/{id}")
+    public String subscribe(@AuthenticationPrincipal User user, @PathVariable(value = "id") long id, Model model){
+        User userProfile = userService.findIdFromDB(id);
+
+        userService.subscribe(user, userProfile);
+
+
+        return "redirect:/profile/"+id;
+    }
+
+    @GetMapping("profile/unsubscribe/{id}")
+    public String unsubscribe(@AuthenticationPrincipal User user, @PathVariable(value = "id") long id, Model model){
+        User userProfile = userService.findIdFromDB(id);
+
+
+        userService.unsubscribe(user, userProfile);
+
+
+        return "redirect:/profile/"+id;
     }
 }

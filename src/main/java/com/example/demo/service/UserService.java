@@ -225,4 +225,19 @@ public class UserService implements UserDetailsService {
 
         return false;
     }
+
+    public void subscribe(User user, User userProfile) {
+        userProfile.getSubscriptions().add(user);
+
+        userRepository.save(userProfile);
+
+    }
+
+    public void unsubscribe(User user, User userProfile) {
+        userProfile.getSubscriptions().remove(user);
+
+
+        userRepository.save(userProfile);
+
+    }
 }
