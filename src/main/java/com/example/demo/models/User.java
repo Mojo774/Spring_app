@@ -1,6 +1,7 @@
 package com.example.demo.models;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -22,9 +23,11 @@ public class User implements UserDetails{
     private Long id;
 
     @NotBlank(message = "Username cannot be empty")
+    @Length(max = 20, message = "Username too long")
     private String username;
 
     @NotBlank(message = "Password cannot be empty")
+    @Length(max = 20, message = "Password too long")
     private String password;
 
     private boolean active;
@@ -35,9 +38,12 @@ public class User implements UserDetails{
     private String activationCode;
 
     // Заменяют основной после активации с почты
+    @NotBlank(message = "Password cannot be empty")
+    @Length(max = 20, message = "Password too long")
     private String newPassword;
 
     @Email(message = "Email is not correct")
+    @Length(max = 30, message = "Email too long")
     private String newEmail;
 
     // EAGER (жадный) - подгружает данные (роли) сразу
