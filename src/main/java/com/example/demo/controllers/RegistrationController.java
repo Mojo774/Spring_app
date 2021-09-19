@@ -55,6 +55,7 @@ public class RegistrationController {
         model.addAttribute("user",user);
 
         Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+        // Дополнительные проверки полей
         // Возможные ошибки в полях при регистрации
         if (userService.findEmailFromDB(user.getNewEmail())) {
             errorsMap.put("newEmailError","пользователь с такой почтой уже существует");

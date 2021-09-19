@@ -194,6 +194,7 @@ public class UserService implements UserDetailsService {
 
 
         user.setActivationCode(UUID.randomUUID().toString());
+
         userRepository.save(user);
 
         String message = String.format(

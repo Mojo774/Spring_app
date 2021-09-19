@@ -27,7 +27,7 @@ public class User implements UserDetails{
     private String username;
 
     @NotBlank(message = "Password cannot be empty")
-    @Length(max = 20, message = "Password too long")
+    @Length(max = 60, message = "Password too long")
     private String password;
 
     private boolean active;
@@ -38,8 +38,7 @@ public class User implements UserDetails{
     private String activationCode;
 
     // Заменяют основной после активации с почты
-    @NotBlank(message = "Password cannot be empty")
-    @Length(max = 20, message = "Password too long")
+    @Length(max = 60, message = "Password too long")
     private String newPassword;
 
     @Email(message = "Email is not correct")
@@ -212,6 +211,8 @@ public class User implements UserDetails{
                 ", newPassword='" + newPassword + '\'' +
                 ", newEmail='" + newEmail + '\'' +
                 ", roles=" + roles +
+                ", subscribers=" + subscribers +
+                ", subscriptions=" + subscriptions +
                 '}';
     }
 

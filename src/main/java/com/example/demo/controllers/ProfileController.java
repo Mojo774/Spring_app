@@ -56,11 +56,8 @@ public class ProfileController {
 
         return "profile";
 
-
     }
 
-
-    // TODO: заменить id на user в параметрах
 
     @GetMapping("profile/subscribe/{id}")
     public String subscribe(@AuthenticationPrincipal User user, @PathVariable(value = "id") long id, Model model){
