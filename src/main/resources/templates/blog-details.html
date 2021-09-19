@@ -18,6 +18,9 @@
 
 
 
+        <div class="alert alert-info mt-2">
+            <a class="btn btn-info" th:href="'/blog/' + ${id} + '/like'">Like</a>
+        </div>
 
         <div th:if="${post.getAuthor().getId()} == ${currentUser.getId()} or ${currentUser.isAdmin()}">
             <a th:href="'/blog/' + ${post.id} + '/edit'" class="btn btn-warning">Редактировать</a>

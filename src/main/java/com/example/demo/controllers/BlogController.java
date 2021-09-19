@@ -156,5 +156,13 @@ public class BlogController {
         return "redirect:/blog";
     }
 
+    @GetMapping("/{id}/like")
+    public String likePost(@PathVariable(value = "id") long id, Model model){
+
+        postService.like(id);
+
+        return "redirect:/blog/"+id;
+    }
+
 
 }
