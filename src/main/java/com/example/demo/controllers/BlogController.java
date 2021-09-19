@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repository.PostRepository;
+import com.example.demo.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -24,8 +25,7 @@ import java.util.Properties;
 public class BlogController {
 
     @Autowired
-    private PostRepository postRepository;
-
+    private PostService postService;
 
 
     @GetMapping()
@@ -34,10 +34,10 @@ public class BlogController {
         Iterable<Post> posts;
 
         if (filter != null && !filter.isEmpty()) {
-            posts = postRepository.findByTitle(filter);
+            posts = postService.findByTitle(filter);
 
         } else {
-            posts = postRepository.findAll();
+            posts = postService.findAll();
         }
 
 
@@ -83,7 +83,8 @@ public class BlogController {
         } else {
             post.setAuthor(user);
 
-            postRepository.save(post);
+
+            postService.save(post);
 
             return "redirect:/blog";
         }
@@ -93,15 +94,14 @@ public class BlogController {
 
     @GetMapping("/{id}")
     public String blogDetails(@PathVariable(value = "id") long id, Model model) {
-        if (!postRepository.existsById(id)) {
+        if (!postService.existsById(id)) {
             return "redirect:/blog";
         }
 
-        Optional<Post> post = postRepository.findById(id);
-        // С list проще работать чем с optinal
-        ArrayList<Post> res = new ArrayList<>();
-        post.ifPresent(res::add);
-        model.addAttribute("post", res);
+        Post post = postService.findById(id);
+        postService.addView(post);
+
+        model.addAttribute("post", post);
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("currentUser", user);
@@ -112,23 +112,16 @@ public class BlogController {
 
     @GetMapping("/{id}/edit")
     public String blogEdit(@PathVariable(value = "id") long id, Model model) {
-        if (!postRepository.existsById(id)) {
+        if (!postService.existsById(id)) {
             return "redirect:/blog";
         }
 
-        Optional<Post> post = postRepository.findById(id);
-        /*// С list проще работать чем с optinal
+        Post post = postService.findById(id);
 
-
-        ArrayList<Post> res = new ArrayList<>();
-
-        post.ifPresent(res::add);
-        model.addAttribute("posts", res);*/
-        model.addAttribute("post",post.get());
+        model.addAttribute("post", post);
 
         return "blog-edit";
     }
-
 
 
     @PostMapping("/{id}/edit")
@@ -138,20 +131,16 @@ public class BlogController {
             BindingResult bindingResult,
             Model model) {
 
-        Post originalPost = postRepository.findById(id).orElseThrow();
-
         Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
         if (!errorsMap.isEmpty()) {
             model.mergeAttributes(errorsMap);
 
             return "blog-edit";
-        } else {
-            originalPost.setTitle(post.getTitle());
-            originalPost.setAnons(post.getAnons());
-            originalPost.setFullText(post.getFullText());
 
-            postRepository.save(originalPost);
+        } else {
+            postService.update(id, post);
+
             return "redirect:/blog";
         }
     }
@@ -159,8 +148,9 @@ public class BlogController {
     @PostMapping("/{id}/remove")
     public String blogPostDelete(@PathVariable(value = "id") long id, Model model) {
 
-        Post post = postRepository.findById(id).orElseThrow();
-        postRepository.delete(post);
+        Post post = postService.findById(id);
+
+        postService.delete(post);
 
 
         return "redirect:/blog";

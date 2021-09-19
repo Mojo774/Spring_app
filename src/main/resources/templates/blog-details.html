@@ -9,20 +9,20 @@
 
 <header th:insert="blocks/header :: header"></header>
 
-<div class="container mt-5">
-    <div th:each="element : ${post}" class="alert alert-info mt-2">
-        <h1 th:text="${element.title}"/>
-        <p th:text="${element.fullText}"/>
-        <p><b>Автор </b><a th:href="'/profile/' + ${element.getAuthor().getId()}" th:text="${element.getAuthor().getUsername()}"></a></p>
-        <p><b>Просмотры</b> <span th:text="${element.views}"/></p>
+<div class="container mt-5" >
+    <div class="alert alert-info mt-2">
+        <h1 th:text="${post.title}"/>
+        <p th:text="${post.fullText}"/>
+        <p><b>Автор </b><a th:href="'/profile/' + ${post.getAuthor().getId()}" th:text="${post.getAuthor().getUsername()}"></a></p>
+        <p><b>Просмотры</b> <span th:text="${post.views}"/></p>
 
 
 
 
-        <div th:if="${element.getAuthor().getId()} == ${currentUser.getId()} or ${currentUser.isAdmin()}">
-            <a th:href="'/blog/' + ${element.id} + '/edit'" class="btn btn-warning">Редактировать</a>
+        <div th:if="${post.getAuthor().getId()} == ${currentUser.getId()} or ${currentUser.isAdmin()}">
+            <a th:href="'/blog/' + ${post.id} + '/edit'" class="btn btn-warning">Редактировать</a>
 
-            <form th:action="'/blog/' + ${element.id} + '/remove'" method="post">
+            <form th:action="'/blog/' + ${post.id} + '/remove'" method="post">
                 <button class="btn btn-warning" type="submit">Удалить</button>
             </form>
         </div>

@@ -8,4 +8,6 @@ import java.util.List;
 public interface PostRepository extends CrudRepository<Post, Long> {
     // Название метода пишится по правилам из спринг
     List<Post> findByTitle(String title);
+
+    List<Post> findAll();
 }
