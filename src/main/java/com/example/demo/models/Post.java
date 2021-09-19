@@ -1,6 +1,5 @@
 package com.example.demo.models;
 
-import com.sun.istack.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 
@@ -27,6 +26,12 @@ public class Post {
     private String fullText;
 
     private int views;
+    private int viewsPerMonth;
+    private int viewsPerWeek;
+
+    private int likes;
+    private int dislike;
+    private int ok;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -90,4 +95,43 @@ public class Post {
         this.author = author;
     }
 
+    public int getViewsPerMonth() {
+        return viewsPerMonth;
+    }
+
+    public void setViewsPerMonth(int viewsPerMonth) {
+        this.viewsPerMonth = viewsPerMonth;
+    }
+
+    public int getViewsPerWeek() {
+        return viewsPerWeek;
+    }
+
+    public void setViewsPerWeek(int viewsPerWeek) {
+        this.viewsPerWeek = viewsPerWeek;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int like) {
+        this.likes = like;
+    }
+
+    public int getDislike() {
+        return dislike;
+    }
+
+    public void setDislike(int dislike) {
+        this.dislike = dislike;
+    }
+
+    public int getOk() {
+        return ok;
+    }
+
+    public void setOk(int ok) {
+        this.ok = ok;
+    }
 }

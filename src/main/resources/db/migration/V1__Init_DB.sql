@@ -5,6 +5,11 @@ create table post (
     full_text MEDIUMTEXT not null,
     title varchar(255) not null,
     views integer not null,
+    viewsPerMonth integer not null,
+    viewsPerWeek integer not null,
+    likes integer not null,
+    dislike integer not null,
+    ok integer not null,
     user_id bigint,
     primary key (id)
 ) engine=MyISAM;
