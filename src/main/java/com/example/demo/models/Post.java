@@ -1,10 +1,13 @@
 package com.example.demo.models;
 
+import com.example.demo.models.util.PostHelper;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Post {
@@ -29,9 +32,31 @@ public class Post {
     private int viewsPerMonth;
     private int viewsPerWeek;
 
-    private int likes;
-    private int dislike;
-    private int ok;
+
+    @ManyToMany
+    @JoinTable(
+            name = "post_likes",
+            joinColumns = { @JoinColumn(name = "post_id")},
+            inverseJoinColumns = { @JoinColumn(name = "user_id")}
+    )
+    private Set<User> likes = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "post_dislikes",
+            joinColumns = { @JoinColumn(name = "post_id")},
+            inverseJoinColumns = { @JoinColumn(name = "user_id")}
+    )
+    private Set<User> dislikes = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "post_oks",
+            joinColumns = { @JoinColumn(name = "post_id")},
+            inverseJoinColumns = { @JoinColumn(name = "user_id")}
+    )
+    private Set<User> oks = new HashSet<>();
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -45,6 +70,10 @@ public class Post {
         this.anons = anons;
         this.fullText = fullText;
         this.author = user;
+    }
+
+    public String getAuthorName(){
+        return PostHelper.getAuthorName(author);
     }
 
     public Long getId() {
@@ -111,27 +140,27 @@ public class Post {
         this.viewsPerWeek = viewsPerWeek;
     }
 
-    public int getLikes() {
+    public Set<User> getLikes() {
         return likes;
     }
 
-    public void setLikes(int like) {
-        this.likes = like;
+    public void setLikes(Set<User> likes) {
+        this.likes = likes;
     }
 
-    public int getDislike() {
-        return dislike;
+    public Set<User> getDislikes() {
+        return dislikes;
     }
 
-    public void setDislike(int dislike) {
-        this.dislike = dislike;
+    public void setDislikes(Set<User> dislikes) {
+        this.dislikes = dislikes;
     }
 
-    public int getOk() {
-        return ok;
+    public Set<User> getOks() {
+        return oks;
     }
 
-    public void setOk(int ok) {
-        this.ok = ok;
+    public void setOks(Set<User> oks) {
+        this.oks = oks;
     }
 }

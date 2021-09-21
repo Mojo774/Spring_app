@@ -10,33 +10,45 @@
 <header th:insert="blocks/header :: header"></header>
 
 <form method="get" action="/blog">
+    <div class="container mt-5">
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="filter-input">Введите поисковой запрос : </span>
 
-    <div class="input-group mb-3">
-        <span class="input-group-text" id="filter-input">Введите поисковой запрос : </span>
+            <input class="form-control"
+                   type="text" name="filter" th:value="${filter}"
+                   aria-label="Password" aria-describedby="filter-input"/>
 
-        <input class="form-control"
-               type="text" name="filter" th:value="${filter}"
-               aria-label="Password" aria-describedby="filter-input"/>
+        </div>
 
+        <button type="submit" class="btn btn-primary" name="find">Найти блог</button>
+
+        <button type="submit" class="btn btn-primary" name="clear">Очистить</button>
     </div>
-
-    <button type="submit" class="btn btn-primary" name="find">Найти блог</button>
-
-    <button type="submit" class="btn btn-primary" name="clear">Очистить</button>
 </form>
 
-
+<div th:insert="blocks/pager :: pager"></div>
 
 <div class="container mt-5">
-    <h>Блог сайта</h>
-    <div th:each="element : ${posts}" class="alert alert-primary mt-2">
-        <h3 th:text="${element.getTitle()}"/>
-        <p th:text="${element.getAnons()}"/>
-        <p><b>Автор</b> <span th:text="${element.getAuthor().getUsername()}"/></p>
-        <a th:href="'/blog/' + ${element.getId()}" class="btn btn-warning">Детальнее</a>
-    </div>
+
+    <tbody>
+    <tr th:each="post, iStat : ${posts.content}"
+        th:style="${iStat.odd}? 'font-weight: bold;'"
+        th:alt-title="${iStat.even}? 'even' : 'odd'">
+
+        <div class="alert alert-primary mt-2">
+
+            <h3 th:text="${post.getTitle()}"/>
+            <p th:text="${post.getAnons()}"/>
+            <p><b>Автор</b> <span th:text="${post.getAuthor().getUsername()}"/></p>
+            <a th:href="'/blog/' + ${post.getId()}" class="btn btn-warning">Детальнее</a>
+        </div>
+    </tr>
+
+    </tbody>
+
 </div>
 
+<div th:insert="blocks/pager :: pager"></div>
 
 <div th:insert="blocks/footer :: footer"></div>
 

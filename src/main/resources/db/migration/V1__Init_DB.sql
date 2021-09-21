@@ -7,9 +7,6 @@ create table post (
     views integer not null,
     viewsPerMonth integer not null,
     viewsPerWeek integer not null,
-    likes integer not null,
-    dislike integer not null,
-    ok integer not null,
     user_id bigint,
     primary key (id)
 ) engine=MyISAM;
@@ -35,6 +32,24 @@ create table user_subscriptions (
     channel_id bigint not null references user,
     subscriber_id bigint not null references user,
     primary key (channel_id, subscriber_id)
+) engine=MyISAM;
+
+create table post_likes (
+    user_id bigint not null references user,
+    post_id bigint not null references post,
+    primary key (user_id, post_id)
+) engine=MyISAM;
+
+create table post_dislikes (
+    user_id bigint not null references user,
+    post_id bigint not null references post,
+    primary key (user_id, post_id)
+) engine=MyISAM;
+
+create table post_oks (
+    user_id bigint not null references user,
+    post_id bigint not null references post,
+    primary key (user_id, post_id)
 ) engine=MyISAM;
 
 alter table post

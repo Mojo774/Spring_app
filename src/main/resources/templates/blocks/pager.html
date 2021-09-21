@@ -1,0 +1,19 @@
+<div th:fragment="pager">
+    <div th:if="${posts.totalPages > 0}" class="container mt-3">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" th:href="@{/blog(size=${posts.size}, page=${previousPage})}">Previous</a>
+            </li>
+            <div th:each="pageNumber : ${pageNumbers}">
+                <li th:class="${pageNumber==posts.number + 1} ? 'page-item active' : 'page-item'">
+                    <a th:href="@{/blog(size=${posts.size}, page=${pageNumber})}"
+                       th:text="${pageNumber}"
+                       class="page-link"></a>
+                </li>
+            </div>
+            <li class="page-item">
+                <a class="page-link" th:href="@{/blog(size=${posts.size}, page=${nextPage})}">Next</a>
+            </li>
+        </ul>
+    </div>
+</div>
