@@ -9,9 +9,9 @@
 
 <header th:insert="blocks/header :: header"></header>
 
-<div th:switch="${userProfile.getId()}">
+<div th:switch="${userProfile.getId()}" class="container mt-3">
 
-    <div th:case="${user.getId()}">
+    <div th:case="${user.getId()}" >
         <h1>Мой профиль</h1>
         <h4 th:text="'My name: ' + ${userProfile.getUsername()}"></h4>
     </div>
@@ -20,8 +20,20 @@
         <h1>Профиль</h1>
         <h4 th:text="'Name: ' + ${userProfile.getUsername()}"></h4>
 
-        <a th:if="${!userProfile.getSubscriptions().contains(user)}" class="btn btn-info" th:href="'/profile/subscribe/' + ${userProfile.getId()}">Подписаться</a>
-        <a th:if="${userProfile.getSubscriptions().contains(user)}" class="btn btn-info" th:href="'/profile/unsubscribe/' + ${userProfile.getId()}">Отписаться</a>
+        <div th:if="${!userProfile.getSubscriptions().contains(user)}">
+            <a class="btn btn-info" th:href="'/profile/subscribe/' + ${userProfile.getId()}">
+                Подписаться <i class="far fa-bookmark"></i>
+            </a>
+
+        </div>
+
+        <div th:if="${userProfile.getSubscriptions().contains(user)}">
+            <a class="btn btn-info" th:href="'/profile/unsubscribe/' + ${userProfile.getId()}">
+                Отписаться <i class="fas fa-bookmark"></i>
+            </a>
+
+        </div>
+
     </div>
 
 </div>
@@ -99,7 +111,7 @@
 <br>
 
 
-<div sec:authorize="hasAuthority('ADMIN')">
+<div sec:authorize="hasAuthority('ADMIN')" class="container mt-3">
     <a href="/user" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Список пользователей</a>
 </div>
 

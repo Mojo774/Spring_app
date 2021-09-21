@@ -1,6 +1,6 @@
 <div th:fragment="pager">
     <div th:if="${posts.totalPages > 0}" class="container mt-3">
-        <ul class="pagination">
+        <ul class="pagination col justify-content-center">
             <li class="page-item">
                 <a class="page-link" th:href="@{/blog(size=${posts.size}, page=${previousPage})}">Previous</a>
             </li>

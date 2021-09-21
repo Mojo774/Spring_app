@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 
 import com.example.demo.models.Post;
+import com.example.demo.models.User;
 import com.example.demo.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -70,5 +71,9 @@ public class PostService {
         } else {
             return postRepository.findAll(pageable);
         }
+    }
+
+    public Page<Post> getPostsByAuthor(Pageable pageable, User author) {
+        return postRepository.findByUser(pageable, author);
     }
 }

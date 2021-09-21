@@ -35,11 +35,10 @@ public class BlogController {
     public String blogMain(
             @RequestParam(required = false, defaultValue = "") String filter,
             Model model,
-            @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam("page") Optional<Integer> page,
             @RequestParam("size") Optional<Integer> size
-            ) {
-
+    ) {
 
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
@@ -59,8 +58,8 @@ public class BlogController {
         model.addAttribute("posts", posts);
         model.addAttribute("filter", filter);
 
-        int nextPage = currentPage < posts.getTotalPages() ? currentPage + 1: currentPage;
-        int previousPage = currentPage > 1 ? currentPage - 1: currentPage;
+        int nextPage = currentPage < posts.getTotalPages() ? currentPage + 1 : currentPage;
+        int previousPage = currentPage > 1 ? currentPage - 1 : currentPage;
 
         model.addAttribute("nextPage", nextPage);
         model.addAttribute("previousPage", previousPage);
@@ -71,7 +70,7 @@ public class BlogController {
     // todo починить
     @GetMapping(params = "clear")
     public String clear(Model model) {
-       // blogMain("", model);
+        // blogMain("", model);
         return "blog-main";
     }
 
@@ -96,17 +95,13 @@ public class BlogController {
 
         if (!errorsMap.isEmpty()) {
 
-
             model.mergeAttributes(errorsMap);
-
             return "blog-add";
 
         } else {
             post.setAuthor(user);
 
-
             postService.save(post);
-
             return "redirect:/blog";
         }
 
@@ -178,11 +173,11 @@ public class BlogController {
     }
 
     @GetMapping("/{id}/like")
-    public String likePost(@PathVariable(value = "id") long id, Model model){
+    public String likePost(@PathVariable(value = "id") long id, Model model) {
 
         postService.like(id);
 
-        return "redirect:/blog/"+id;
+        return "redirect:/blog/" + id;
     }
 
 
