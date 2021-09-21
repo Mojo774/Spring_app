@@ -17,12 +17,19 @@ public class ProfileController {
     // переадресация на /{id} тк я не знаю как добавить id в header
     // там только на /profile можно ссылку сделать
     @GetMapping("/profile")
-    public String getProfile(@AuthenticationPrincipal User user, Model model) {
+    public String getProfile(
+            @AuthenticationPrincipal User user,
+            Model model
+    ) {
         return "redirect:/profile/"+user.getId();
     }
 
     @GetMapping("/profile/{id}")
-    public String getProfile2(@PathVariable(value = "id") long id, @AuthenticationPrincipal User user, Model model) {
+    public String getProfile2(
+            @PathVariable(value = "id") long id,
+            @AuthenticationPrincipal User user,
+            Model model
+    ) {
 
         User userProfile = userService.findIdFromDB(id);
 
@@ -60,7 +67,11 @@ public class ProfileController {
 
 
     @GetMapping("profile/subscribe/{id}")
-    public String subscribe(@AuthenticationPrincipal User user, @PathVariable(value = "id") long id, Model model){
+    public String subscribe(
+            @AuthenticationPrincipal User user,
+            @PathVariable(value = "id") long id,
+            Model model
+    ){
         User userProfile = userService.findIdFromDB(id);
 
         userService.subscribe(user, userProfile);
@@ -70,7 +81,11 @@ public class ProfileController {
     }
 
     @GetMapping("profile/unsubscribe/{id}")
-    public String unsubscribe(@AuthenticationPrincipal User user, @PathVariable(value = "id") long id, Model model){
+    public String unsubscribe(
+            @AuthenticationPrincipal User user,
+            @PathVariable(value = "id") long id,
+            Model model
+    ){
         User userProfile = userService.findIdFromDB(id);
 
 

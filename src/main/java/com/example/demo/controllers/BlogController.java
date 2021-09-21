@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.models.Grade;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.service.PostService;
@@ -35,10 +36,11 @@ public class BlogController {
     public String blogMain(
             @RequestParam(required = false, defaultValue = "") String filter,
             Model model,
-            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam("page") Optional<Integer> page,
             @RequestParam("size") Optional<Integer> size
-    ) {
+            ) {
+
 
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
@@ -58,8 +60,8 @@ public class BlogController {
         model.addAttribute("posts", posts);
         model.addAttribute("filter", filter);
 
-        int nextPage = currentPage < posts.getTotalPages() ? currentPage + 1 : currentPage;
-        int previousPage = currentPage > 1 ? currentPage - 1 : currentPage;
+        int nextPage = currentPage < posts.getTotalPages() ? currentPage + 1: currentPage;
+        int previousPage = currentPage > 1 ? currentPage - 1: currentPage;
 
         model.addAttribute("nextPage", nextPage);
         model.addAttribute("previousPage", previousPage);
@@ -70,7 +72,7 @@ public class BlogController {
     // todo починить
     @GetMapping(params = "clear")
     public String clear(Model model) {
-        // blogMain("", model);
+       // blogMain("", model);
         return "blog-main";
     }
 
@@ -109,7 +111,11 @@ public class BlogController {
 
 
     @GetMapping("/{id}")
-    public String blogDetails(@PathVariable(value = "id") long id, Model model) {
+    public String blogDetails(
+            @AuthenticationPrincipal User user,
+            @PathVariable(value = "id") long id,
+            Model model
+    ) {
         if (!postService.existsById(id)) {
             return "redirect:/blog";
         }
@@ -117,11 +123,16 @@ public class BlogController {
         Post post = postService.findById(id);
         postService.addView(post);
 
+        // Отметить какая из оценок активирована у пользователя
+        int grade = postService.getGrade(post, user);
+
         model.addAttribute("post", post);
-
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("currentUser", user);
+        model.addAttribute("grade", grade);
 
+        model.addAttribute("likes", post.getLikes().size());
+        model.addAttribute("dislikes", post.getDislikes().size());
+        model.addAttribute("oks", post.getOks().size());
 
         return "blog-details";
     }
@@ -173,11 +184,39 @@ public class BlogController {
     }
 
     @GetMapping("/{id}/like")
-    public String likePost(@PathVariable(value = "id") long id, Model model) {
+    public String likePost(
+            @AuthenticationPrincipal User user,
+            @PathVariable(value = "id") long id,
+            Model model
+    ){
 
-        postService.like(id);
+        postService.like(user, id, Grade.LIKE);
 
-        return "redirect:/blog/" + id;
+        return "redirect:/blog/"+id;
+    }
+
+    @GetMapping("/{id}/dislike")
+    public String dislikePost(
+            @AuthenticationPrincipal User user,
+            @PathVariable(value = "id") long id,
+            Model model
+    ){
+
+        postService.like(user, id, Grade.DISLIKE);
+
+        return "redirect:/blog/"+id;
+    }
+
+    @GetMapping("/{id}/ok")
+    public String okPost(
+            @AuthenticationPrincipal User user,
+            @PathVariable(value = "id") long id,
+            Model model
+    ){
+
+        postService.like(user, id, Grade.OK);
+
+        return "redirect:/blog/"+id;
     }
 
 

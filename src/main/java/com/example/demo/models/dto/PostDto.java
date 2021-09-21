@@ -17,12 +17,12 @@ public class PostDto {
     private int viewsPerMonth;
     private int viewsPerWeek;
 
-    private int likes;
-    private int dislikes;
-    private int oks;
-    private Boolean meAppreciated;
+    private long likes;
+    private long dislikes;
+    private long oks;
+    private boolean meAppreciated;
 
-    public PostDto(Post post, int likes, int dislikes, int oks, Boolean meAppreciated) {
+    public PostDto(Post post, long likes, boolean meAppreciated) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.anons = post.getAnons();
@@ -33,8 +33,8 @@ public class PostDto {
         this.viewsPerWeek = post.getViewsPerWeek();
 
         this.likes = likes;
-        this.dislikes = dislikes;
-        this.oks = oks;
+        //this.dislikes = dislikes;
+        //this.oks = oks;
         this.meAppreciated = meAppreciated;
     }
 
@@ -74,19 +74,19 @@ public class PostDto {
         return viewsPerWeek;
     }
 
-    public int getLikes() {
+    public long getLikes() {
         return likes;
     }
 
-    public int getDislikes() {
+    public long getDislikes() {
         return dislikes;
     }
 
-    public int getOks() {
+    public long getOks() {
         return oks;
     }
 
-    public Boolean getMeAppreciated() {
+    public boolean getMeAppreciated() {
         return meAppreciated;
     }
 

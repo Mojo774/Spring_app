@@ -18,5 +18,5 @@ public interface PostRepository extends CrudRepository<Post, Long> {
     Page<Post> findAll(Pageable pageable);
 
     @Query("from Post p where p.author = :author")
-    Page<Post> findByUser(Pageable pageable, @Param("author") User Author);
+    Page<Post> findByUser(Pageable pageable,@Param("author") User Author);
 }
