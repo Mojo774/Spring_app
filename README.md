@@ -35,6 +35,9 @@
 * JDBC
 * JPA
 
+* Hibernate
+  * HQL (JPQL)
+
 * SQL
   * MySQL
  
@@ -44,6 +47,7 @@
 
 * Шаблонизатор - thymeleaf
   * Сайт с шаблонами - bootstrap
+  * Сайт с иконками - font awesome
 
 
 
