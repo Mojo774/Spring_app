@@ -116,4 +116,11 @@ public class PostService {
         postRepository.save(post);
     }
 
+    // Проверка доступа пользователя к редактированию поста
+    public boolean access(Post post, User user) {
+        if (post.getAuthor().equals(user) || user.isAdmin())
+            return true;
+
+        return false;
+    }
 }

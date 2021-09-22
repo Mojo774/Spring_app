@@ -20,19 +20,19 @@
 
         <div class="alert alert-info mt-2">
 
-            <a class="btn btn-info" th:href="'/blog/' + ${id} + '/LIKE'">
+            <a class="btn btn-info" th:href="'/blog/' + ${post.getId()} + '/LIKE'">
                 Like
                 <i th:if="${grade == 1}" class="fas fa-heart" th:text="' ' + ${likes}"></i>
                 <i th:unless="${grade == 1}" class="far fa-heart" th:text="' ' + ${likes}"></i>
             </a>
 
-            <a class="btn btn-info" th:href="'/blog/' + ${id} + '/OK'">
+            <a class="btn btn-info" th:href="'/blog/' + ${post.getId()} + '/OK'">
                 Ok
                 <i th:if="${grade == 2}" class="fas fa-meh" th:text="' ' + ${oks}"></i>
                 <i th:unless="${grade == 2}" class="far fa-meh" th:text="' ' + ${oks}"></i>
             </a>
 
-            <a class="btn btn-info" th:href="'/blog/' + ${id} + '/DISLIKE'">
+            <a class="btn btn-info" th:href="'/blog/' + ${post.getId()} + '/DISLIKE'">
                 Dislike
                 <i th:if="${grade == 3}" class="fas fa-heart-broken" th:text="' ' + ${dislikes}"></i>
                 <i th:unless="${grade == 3}" class="far fa-heart" th:text="' ' + ${dislikes}"></i>
@@ -41,9 +41,9 @@
         </div>
 
         <div th:if="${post.getAuthor().getId()} == ${currentUser.getId()} or ${currentUser.isAdmin()}">
-            <a th:href="'/blog/' + ${post.id} + '/edit'" class="btn btn-warning">Редактировать</a>
+            <a th:href="'/blog/' + ${post.getId()} + '/edit'" class="btn btn-warning">Редактировать</a>
 
-            <form th:action="'/blog/' + ${post.id} + '/remove'" method="post">
+            <form th:action="'/blog/' + ${post.getId()} + '/remove'" method="post">
                 <button class="btn btn-warning" type="submit">Удалить</button>
             </form>
         </div>
