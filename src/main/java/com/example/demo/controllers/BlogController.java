@@ -16,6 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Optional;
 import javax.validation.Valid;
@@ -123,7 +126,7 @@ public class BlogController {
         Post post = postService.findById(id);
         postService.addView(post);
 
-        // Отметить какая из оценок активирована у пользователя
+
         int grade = postService.getGrade(post, user);
 
         model.addAttribute("post", post);
@@ -183,41 +186,26 @@ public class BlogController {
         return "redirect:/blog";
     }
 
-    @GetMapping("/{id}/like")
-    public String likePost(
+    // todo: заменить везде id на пост как тут (было как у дизлайка)
+    @GetMapping("/{post}/{grade}")
+    public String ratePost(
             @AuthenticationPrincipal User user,
-            @PathVariable(value = "id") long id,
+            @PathVariable Post post,
+            @PathVariable String grade,
+            RedirectAttributes redirectAttributes,
+            @RequestHeader (required = false) String referer,
             Model model
     ){
 
-        postService.like(user, id, Grade.LIKE);
+        postService.ratePost(user, post, Grade.valueOf(grade));
 
-        return "redirect:/blog/"+id;
+        UriComponents components = UriComponentsBuilder.fromHttpUrl(referer).build();
+        components.getQueryParams()
+                .entrySet()
+                .forEach(pair -> redirectAttributes.addAttribute(pair.getKey(), pair.getValue()));
+        return "redirect:"+components.getPath();
     }
 
-    @GetMapping("/{id}/dislike")
-    public String dislikePost(
-            @AuthenticationPrincipal User user,
-            @PathVariable(value = "id") long id,
-            Model model
-    ){
-
-        postService.like(user, id, Grade.DISLIKE);
-
-        return "redirect:/blog/"+id;
-    }
-
-    @GetMapping("/{id}/ok")
-    public String okPost(
-            @AuthenticationPrincipal User user,
-            @PathVariable(value = "id") long id,
-            Model model
-    ){
-
-        postService.like(user, id, Grade.OK);
-
-        return "redirect:/blog/"+id;
-    }
 
 
 }

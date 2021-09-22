@@ -163,4 +163,17 @@ public class Post {
     public void setOks(Set<User> oks) {
         this.oks = oks;
     }
+
+    public Set<User> getSetGrade(Grade grade){
+        switch (grade){
+            case LIKE:
+                return getLikes();
+            case OK:
+                return getOks();
+            case DISLIKE:
+                return getDislikes();
+        }
+        return null;
+    }
+
 }

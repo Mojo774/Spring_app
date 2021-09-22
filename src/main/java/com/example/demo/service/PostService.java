@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -58,46 +59,6 @@ public class PostService {
         postRepository.save(originalPost);
     }
 
-    // todo: сделать номарльно
-    public void like(User user, long id, Grade grade) {
-        Post post = findById(id);
-        resetGrade(post, user);
-
-        Set<User> set;
-        switch (grade){
-            case OK:
-                set = post.getOks();
-                if (!set.contains(user)) {
-                    set.add(user);
-                    post.setOks(set);
-                } else {
-                    resetGrade(post, user);
-                }
-                break;
-            case LIKE:
-                set = post.getLikes();
-                if (!set.contains(user)) {
-                    set.add(user);
-                    post.setLikes(set);
-                } else {
-                    resetGrade(post, user);
-                }
-                break;
-            case DISLIKE:
-                set = post.getDislikes();
-                if (!set.contains(user)) {
-                    set.add(user);
-                    post.setDislikes(set);
-                } else {
-                    resetGrade(post, user);
-                }
-                break;
-        }
-
-
-        postRepository.save(post);
-    }
-
     public Page<Post> getPostsByFilter(Pageable pageable, String filter) {
         if (filter != null && !filter.isEmpty()) {
             return postRepository.findByTitle(pageable, filter);
@@ -111,6 +72,24 @@ public class PostService {
         return postRepository.findByUser(pageable, author);
     }
 
+
+    public void ratePost(User user, Post post, Grade grade) {
+
+        Set<User> set = post.getSetGrade(grade);
+
+        if (!set.contains(user)) {
+            resetGrade(post, user);
+
+            set.add(user);
+
+        } else {
+            resetGrade(post, user);
+        }
+
+        postRepository.save(post);
+    }
+
+    // Отметить какая из оценок активирована у пользователя
     public int getGrade(Post post, User user) {
         if (post.getLikes().contains(user))
             return 1;

@@ -20,19 +20,19 @@
 
         <div class="alert alert-info mt-2">
 
-            <a class="btn btn-info" th:href="'/blog/' + ${id} + '/like'">
+            <a class="btn btn-info" th:href="'/blog/' + ${id} + '/LIKE'">
                 Like
                 <i th:if="${grade == 1}" class="fas fa-heart" th:text="' ' + ${likes}"></i>
                 <i th:unless="${grade == 1}" class="far fa-heart" th:text="' ' + ${likes}"></i>
             </a>
 
-            <a class="btn btn-info" th:href="'/blog/' + ${id} + '/ok'">
+            <a class="btn btn-info" th:href="'/blog/' + ${id} + '/OK'">
                 Ok
                 <i th:if="${grade == 2}" class="fas fa-meh" th:text="' ' + ${oks}"></i>
                 <i th:unless="${grade == 2}" class="far fa-meh" th:text="' ' + ${oks}"></i>
             </a>
 
-            <a class="btn btn-info" th:href="'/blog/' + ${id} + '/dislike'">
+            <a class="btn btn-info" th:href="'/blog/' + ${id} + '/DISLIKE'">
                 Dislike
                 <i th:if="${grade == 3}" class="fas fa-heart-broken" th:text="' ' + ${dislikes}"></i>
                 <i th:unless="${grade == 3}" class="far fa-heart" th:text="' ' + ${dislikes}"></i>
