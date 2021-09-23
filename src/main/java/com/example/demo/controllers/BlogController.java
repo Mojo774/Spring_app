@@ -20,10 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Optional;
+import java.util.*;
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -59,6 +57,8 @@ public class BlogController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
+        List<Integer> itemsPerPage = Arrays.asList(5,10,20,50);
+        model.addAttribute("itemsPerPage",itemsPerPage);
 
         model.addAttribute("posts", posts);
         model.addAttribute("filter", filter);

@@ -1,6 +1,9 @@
 <div th:fragment="pager">
     <div th:if="${posts.totalPages > 0}" class="container mt-3">
         <ul class="pagination col justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Pages</a>
+            </li>
             <li class="page-item">
                 <a class="page-link" th:href="@{/blog(size=${posts.size}, page=${previousPage})}">Previous</a>
             </li>
@@ -15,5 +18,19 @@
                 <a class="page-link" th:href="@{/blog(size=${posts.size}, page=${nextPage})}">Next</a>
             </li>
         </ul>
+
+        <ul class="pagination col justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Items per page</a>
+            </li>
+            <div th:each="items : ${itemsPerPage}">
+                <li th:class="${items==posts.size} ? 'page-item active' : 'page-item'">
+                    <a th:href="@{/blog(size=${items})}"
+                       th:text="${items}"
+                       class="page-link"></a>
+                </li>
+            </div>
+        </ul>
+
     </div>
 </div>
