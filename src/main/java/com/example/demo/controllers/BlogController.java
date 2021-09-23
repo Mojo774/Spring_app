@@ -172,12 +172,6 @@ public class BlogController {
             BindingResult bindingResult,
             Model model) {
 
-        try {
-            if (!postService.access(post, user))
-                throw new Exception();
-        } catch (Exception e) {
-            return "redirect:/blog";
-        }
 
         Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
