@@ -20,7 +20,7 @@
 
         <div class="alert alert-info mt-2">
 
-            <a class="btn btn-info" th:href="'/blog/' + ${post.getId()} + '/LIKE'">
+            <a class="btn btn-info" th:href="'/blog/' + ${post.getId()} + '/LIKE'" >
                 Like
                 <i th:if="${grade == 1}" class="fas fa-heart" th:text="' ' + ${likes}"></i>
                 <i th:unless="${grade == 1}" class="far fa-heart" th:text="' ' + ${likes}"></i>

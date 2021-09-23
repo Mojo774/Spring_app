@@ -216,7 +216,6 @@ public class BlogController {
         return "redirect:/blog";
     }
 
-    // todo: заменить везде id на пост как тут (было как у дизлайка)
     @GetMapping("/{post}/{grade}")
     public String ratePost(
             @AuthenticationPrincipal User user,
@@ -229,6 +228,9 @@ public class BlogController {
 
         postService.ratePost(user, post, Grade.valueOf(grade));
 
+        // чтобы данные о текущей странице сохранились
+        // если бы мы были на странице n и показывало m элементов
+        // то после постановки оценки мы бы отсались на той же странице
         UriComponents components = UriComponentsBuilder.fromHttpUrl(referer).build();
         components.getQueryParams()
                 .entrySet()

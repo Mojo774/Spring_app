@@ -7,8 +7,9 @@
 </head>
 
 <body>
-    <header th:insert="blocks/header :: header"></header>
+<header th:insert="blocks/header :: header"></header>
 
+<div class="container mt-5">
     <h1>Войти</h1>
 
     <div th:if="${param.error}">
@@ -21,10 +22,12 @@
     <form th:action="@{/login}" method="post">
         <div><label> User Name : <input type="text" name="username"/> </label></div>
         <div><label> Password: <input type="password" name="password"/> </label></div>
+        <br>
         <div><input type="submit" value="Войти"/></div>
     </form>
 
-    <div th:insert="blocks/footer :: footer"></div>
+</div>
+<div th:insert="blocks/footer :: footer"></div>
 
 </body>
 </html>

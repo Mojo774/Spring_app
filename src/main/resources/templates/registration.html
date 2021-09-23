@@ -8,79 +8,80 @@
 
 <body>
 <header th:insert="blocks/header :: header"></header>
+<div class="container mt-5">
+    <h1>Регистрация</h1>
 
-<h1>Регистрация</h1>
+    <div th:if="${param.error}">
+        Invalid username and password.
+    </div>
+    <div th:if="${param.logout}">
+        You have been logged out.
+    </div>
+    <form th:action="@{/registration}" method="post">
 
-<div th:if="${param.error}">
-    Invalid username and password.
+
+        <!--username-->
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="username">User name : </span>
+            <input th:class="${usernameError != null} ? 'form-control is-invalid' : 'form-control'"
+                   th:value="${user.getUsername()}"
+                   type="text" name="username" maxlength="20"
+                   aria-label="Username" aria-describedby="username"/>
+
+            <div th:if="${usernameError != null}" th:text="${usernameError}" class="invalid-feedback">
+
+            </div>
+        </div>
+
+
+        <!--email-->
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="email">Email : </span>
+            <input th:class="${newEmailError != null} ? 'form-control is-invalid' : 'form-control'"
+                   th:value="${user.getNewEmail()}"
+                   type="email" name="newEmail" maxlength="50"
+                   aria-label="Username" aria-describedby="email"
+                   placeholder="some@some.com"/>
+
+            <div th:if="${newEmailError != null}" th:text="${newEmailError}" class="invalid-feedback">
+
+            </div>
+        </div>
+
+        <!--password-->
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="password">Password : </span>
+            <input th:class="${passwordError != null} ? 'form-control is-invalid' : 'form-control'"
+                   type="password" name="password" maxlength="100"
+                   aria-label="Username" aria-describedby="password"/>
+
+            <div th:if="${passwordError != null}" th:text="${passwordError}" class="invalid-feedback">
+
+            </div>
+        </div>
+
+        <!--Confirm password-->
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="confirm-password">Confirm password : </span>
+            <input th:class="${passwordCheckError != null} ? 'form-control is-invalid' : 'form-control'"
+                   type="password" name="passwordCheck" maxlength="100"
+                   aria-label="Username" aria-describedby="confirm-password"/>
+
+            <div th:if="${passwordCheckError != null}" th:text="${passwordCheckError}" class="invalid-feedback">
+
+            </div>
+        </div>
+
+        <div>
+            <div class="g-recaptcha" data-sitekey="6LdyLOMbAAAAAJuMODqqRxRyVWoFtxYn3MTsdXhW"></div>
+            <div th:if="${captchaError != null}" th:text="${captchaError}" class="alert alert-danger" role="alert">
+
+            </div>
+        </div>
+        <br>
+        <input type="submit" value="Зарегистрироваться"/>
+    </form>
 </div>
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
-<form th:action="@{/registration}" method="post">
-
-
-    <!--username-->
-    <div class="input-group mb-3">
-        <span class="input-group-text" id="username">User name : </span>
-        <input th:class="${usernameError != null} ? 'form-control is-invalid' : 'form-control'"
-               th:value="${user.getUsername()}"
-               type="text" name="username" maxlength="20"
-               aria-label="Username" aria-describedby="username"/>
-
-        <div th:if="${usernameError != null}" th:text="${usernameError}" class="invalid-feedback">
-
-        </div>
-    </div>
-
-
-    <!--email-->
-    <div class="input-group mb-3">
-        <span class="input-group-text" id="email">Email : </span>
-        <input th:class="${newEmailError != null} ? 'form-control is-invalid' : 'form-control'"
-               th:value="${user.getNewEmail()}"
-               type="email" name="newEmail" maxlength="50"
-               aria-label="Username" aria-describedby="email"
-               placeholder="some@some.com"/>
-
-        <div th:if="${newEmailError != null}" th:text="${newEmailError}" class="invalid-feedback">
-
-        </div>
-    </div>
-
-    <!--password-->
-    <div class="input-group mb-3">
-        <span class="input-group-text" id="password">Password : </span>
-        <input th:class="${passwordError != null} ? 'form-control is-invalid' : 'form-control'"
-               type="password" name="password" maxlength="100"
-               aria-label="Username" aria-describedby="password"/>
-
-        <div th:if="${passwordError != null}" th:text="${passwordError}" class="invalid-feedback">
-
-        </div>
-    </div>
-
-    <!--Confirm password-->
-    <div class="input-group mb-3">
-        <span class="input-group-text" id="confirm-password">Confirm password : </span>
-        <input th:class="${passwordCheckError != null} ? 'form-control is-invalid' : 'form-control'"
-               type="password" name="passwordCheck" maxlength="100"
-               aria-label="Username" aria-describedby="confirm-password"/>
-
-        <div th:if="${passwordCheckError != null}" th:text="${passwordCheckError}" class="invalid-feedback">
-
-        </div>
-    </div>
-
-    <div>
-        <div class="g-recaptcha" data-sitekey="6LdyLOMbAAAAAJuMODqqRxRyVWoFtxYn3MTsdXhW"></div>
-        <div th:if="${captchaError != null}" th:text="${captchaError}" class="alert alert-danger" role="alert">
-
-        </div>
-    </div>
-    <div><input type="submit" value="Зарегистрироваться"/></div>
-</form>
-
 
 <div th:insert="blocks/footer :: footer"></div>
 
