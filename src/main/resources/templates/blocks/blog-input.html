@@ -1,0 +1,36 @@
+<div th:fragment="blog-input">
+    <div class="input-group mt-3">
+        <input th:class="${titleError != null} ? 'form-control is-invalid' : 'form-control'"
+               th:value="${post.getTitle()}"
+               name="title" type="text"
+               placeholder="Введите название статьи">
+
+        <div th:if="${titleError != null}" th:text="${titleError}" class="invalid-feedback">
+
+        </div>
+    </div>
+
+    <div class="input-group mt-3">
+        <input th:class="${anonsError != null} ? 'form-control is-invalid' : 'form-control'"
+               th:value="${post.getAnons()}"
+               name="anons" type="text"
+               placeholder="Введите анонс статьи">
+        <div th:if="${anonsError != null}" th:text="${anonsError}" class="invalid-feedback">
+
+        </div>
+    </div>
+
+    <div class="input-group mt-3">
+        <span class="input-group-text">Текст</span>
+
+        <textarea
+                th:class="${fullTextError != null} ? 'form-control is-invalid' : 'form-control'"
+                th:text="${post.getFullText()}"
+                name="fullText" type="text"
+                placeholder="Введите текст статьи" aria-label="With textarea">
+            </textarea>
+        <div th:if="${fullTextError != null}" th:text="${fullTextError}" class="invalid-feedback">
+
+        </div>
+    </div>
+</div>

@@ -18,8 +18,10 @@
         <div th:each="role : ${userRoles}">
             <label><input type="checkbox" th:name="${role.getKey()}" th:text="' ' + ${role.getKey()}" th:checked="${role.getValue()}? 'checked'"/></label>
         </div>
+
         <input type="hidden" th:value="${element.getId()}" name="userId">
     </div>
+
     <button type="submit">Save</button>
 </form>
 

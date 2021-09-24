@@ -11,12 +11,12 @@
 
 <div th:each="element : ${users}" class="alert alert-info mt-2">
     <h3 th:text="${element.getUsername()}" />
+
     <div th:each="role : ${element.getRoles()}">
         <p th:text="${role}"/>
     </div>
+
     <a th:href="'/user/' + ${element.getId()}" class="btn btn-warning">Редактировать</a>
-
-
 </div>
 
 <div th:insert="blocks/footer :: footer"></div>

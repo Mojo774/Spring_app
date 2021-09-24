@@ -9,8 +9,8 @@
 
 <header th:insert="blocks/header :: header"></header>
 
-<div class="container mt-5">
-    <div class="alert alert-info mt-2">
+<div class="container mt-3">
+    <div class="alert alert-info mt-3">
         <h1 th:text="${post.title}"/>
         <p th:text="${post.fullText}"/>
         <p><b>Автор </b><a th:href="'/profile/' + ${post.getAuthor().getId()}"
@@ -18,7 +18,7 @@
         <p><b>Просмотры</b> <span th:text="${post.views}"/></p>
 
 
-        <div class="alert alert-info mt-2">
+        <div class="alert alert-info mt-3">
 
             <a class="btn btn-info" th:href="'/blog/' + ${post.getId()} + '/LIKE'" >
                 Like
@@ -34,18 +34,20 @@
 
             <a class="btn btn-info" th:href="'/blog/' + ${post.getId()} + '/DISLIKE'">
                 Dislike
-                <i th:if="${grade == 3}" class="fas fa-heart-broken" th:text="' ' + ${dislikes}"></i>
-                <i th:unless="${grade == 3}" class="far fa-heart" th:text="' ' + ${dislikes}"></i>
+
+                <i th:if="${grade == 3}" class="fas fa-thumbs-down" th:text="' ' + ${dislikes}"></i>
+                <i th:unless="${grade == 3}" class="far fa-thumbs-down" th:text="' ' + ${dislikes}"></i>
             </a>
 
         </div>
 
-        <div th:if="${post.getAuthor().getId()} == ${currentUser.getId()} or ${currentUser.isAdmin()}">
+        <div  th:if="${post.getAuthor().getId()} == ${currentUser.getId()} or ${currentUser.isAdmin()}">
+
+
             <a th:href="'/blog/' + ${post.getId()} + '/edit'" class="btn btn-warning">Редактировать</a>
 
-            <form th:action="'/blog/' + ${post.getId()} + '/remove'" method="post">
-                <button class="btn btn-warning" type="submit">Удалить</button>
-            </form>
+            <a th:href="'/blog/' + ${post.getId()} + '/remove'" class="btn btn-warning">Удалить</a>
+
         </div>
 
 

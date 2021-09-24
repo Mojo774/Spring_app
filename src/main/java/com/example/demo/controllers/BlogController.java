@@ -187,7 +187,7 @@ public class BlogController {
         }
     }
 
-    @PostMapping("/{id}/remove")
+    @GetMapping("/{id}/remove")
     public String blogPostDelete(
             @AuthenticationPrincipal User user,
             @PathVariable(value = "id") long id,

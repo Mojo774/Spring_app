@@ -10,60 +10,17 @@
 <header th:insert="blocks/header :: header"></header>
 
 
-
 <div class="container mt-5 mb-5">
     <h1>Редактирование статьи </h1>
 
-        <form th:action="'/blog/'+${post.getId()}+'/edit'" method="post">
+    <form th:action="'/blog/'+${post.getId()}+'/edit'" method="post" class="mt-3">
 
-            <div >
-                <input th:class="${titleError != null} ? 'form-control is-invalid' : 'form-control'"
-                       th:value="${post.getTitle()}"
-                       name="title" type="text"
-                       placeholder="Введите название статьи">
+        <div th:insert="blocks/blog-input :: blog-input"></div>
 
-                <div th:if="${titleError != null}" th:text="${titleError}" class="invalid-feedback">
-
-                </div>
-
-            </div>
-
-            <br>
-
-            <div>
-
-                <input th:class="${anonsError != null} ? 'form-control is-invalid' : 'form-control'"
-                       th:value="${post.getAnons()}"
-                       name="anons" type="text"
-                       placeholder="Введите анонс статьи">
-                <div th:if="${anonsError != null}" th:text="${anonsError}" class="invalid-feedback">
-
-                </div>
-
-            </div>
-
-            <br>
-
-            <div class="input-group">
-                <span class="input-group-text">Текст</span>
-
-                <textarea
-                        th:class="${fullTextError != null} ? 'form-control is-invalid' : 'form-control'"
-                        th:text="${post.getFullText()}"
-                        name="fullText" type="text"
-                        placeholder="Введите текст статьи" aria-label="With textarea">
-            </textarea>
-                <div th:if="${fullTextError != null}" th:text="${fullTextError}" class="invalid-feedback">
-
-                </div>
-            </div>
-
-            <br><br>
-
-            <div>
-                <button type="submit" class="btn btn-outline-primary">Обновить</button>
-            </div>
-        </form>
+        <div class="mt-3">
+            <button type="submit" class="btn btn-outline-primary">Обновить</button>
+        </div>
+    </form>
 
 </div>
 
