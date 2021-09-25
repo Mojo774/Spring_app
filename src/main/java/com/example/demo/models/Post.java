@@ -17,7 +17,7 @@ public class Post {
     private Long id;
 
     @NotBlank (message = "Please fill the message")
-    @Length(max = 300, message = "Title too long")
+    @Length(max = 40, message = "Title too long")
     private String title;
 
     @NotBlank (message = "Please fill the message")
