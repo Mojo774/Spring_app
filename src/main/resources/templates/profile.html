@@ -20,14 +20,14 @@
         <h1>Профиль</h1>
         <h4 th:text="'Name: ' + ${userProfile.getUsername()}"></h4>
 
-        <div th:if="${!userProfile.getSubscriptions().contains(user)}">
+        <div th:if="${!userProfile.getSubscribers().contains(user)}">
             <a class="btn btn-info" th:href="'/profile/subscribe/' + ${userProfile.getId()}">
                 Подписаться <i class="far fa-bookmark"></i>
             </a>
 
         </div>
 
-        <div th:if="${userProfile.getSubscriptions().contains(user)}">
+        <div th:if="${userProfile.getSubscribers().contains(user)}">
             <a class="btn btn-info" th:href="'/profile/unsubscribe/' + ${userProfile.getId()}">
                 Отписаться <i class="fas fa-bookmark"></i>
             </a>
