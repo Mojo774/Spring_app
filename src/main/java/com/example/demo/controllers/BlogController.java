@@ -4,6 +4,7 @@ import com.example.demo.models.Grade;
 import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.service.PostService;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,23 +33,26 @@ public class BlogController {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private UserService userService;
+
 
     @GetMapping()
     public String blogMain(
             @RequestParam(required = false, defaultValue = "") String filter,
+            @RequestParam(required = false, defaultValue = "") String authorId,
             Model model,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam("page") Optional<Integer> page,
             @RequestParam("size") Optional<Integer> size
     ) {
-
-
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
 
-        Page<Post> posts;
+        User author = userService.findIdFromDB(authorId);
 
-        posts = postService.getPostsByFilter(PageRequest.of(currentPage - 1, pageSize), filter);
+        Page<Post> posts;
+        posts = postService.getPostsByFilter(PageRequest.of(currentPage - 1, pageSize), filter, author);
 
         int totalPages = posts.getTotalPages();
         if (totalPages > 0) {
@@ -61,7 +65,8 @@ public class BlogController {
         model.addAttribute("itemsPerPage",itemsPerPage);
 
         model.addAttribute("posts", posts);
-        model.addAttribute("filter", filter);
+        model.addAttribute("filter",filter);
+        model.addAttribute("authorId", authorId);
 
         int nextPage = currentPage < posts.getTotalPages() ? currentPage + 1 : currentPage;
         int previousPage = currentPage > 1 ? currentPage - 1 : currentPage;
@@ -74,9 +79,14 @@ public class BlogController {
 
 
     @GetMapping(params = "clear")
-    public String clear(Model model) {
-        // blogMain("", model);
-        return "redirect:/blog/";
+    public String clear(
+            @RequestParam(required = false, defaultValue = "") String authorId,
+            Model model
+    ) {
+        if (!authorId.equals(""))
+            return "redirect:/blog?authorId="+authorId;
+        else
+            return "redirect:/blog";
     }
 
     @GetMapping("/add")

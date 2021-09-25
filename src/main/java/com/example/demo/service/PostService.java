@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -59,13 +57,25 @@ public class PostService {
         postRepository.save(originalPost);
     }
 
-    public Page<Post> getPostsByFilter(Pageable pageable, String filter) {
-        if (filter != null && !filter.isEmpty()) {
+    public Page<Post> getPostsByFilter(Pageable pageable, String filter, User author) {
+
+        boolean isAuthorNull = author == null;
+        boolean isFilterNull = filter == null || filter.isEmpty();
+        
+        
+        
+        if (!isAuthorNull) {
+
+            if (!isFilterNull)
+                return postRepository.findByTitleAndUser(pageable, filter, author);
+            else
+                return getPostsByAuthor(pageable, author);
+        }
+
+        if (!isFilterNull)
             return postRepository.findByTitle(pageable, filter);
 
-        } else {
-            return postRepository.findAll(pageable);
-        }
+        return postRepository.findAll(pageable);
     }
 
     public Page<Post> getPostsByAuthor(Pageable pageable, User author) {

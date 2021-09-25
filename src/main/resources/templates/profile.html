@@ -111,6 +111,22 @@
     </div>
 </form>
 
+
+<div class="container mt-3">
+    <form method="get" action="/blog">
+
+        <input type="hidden" name="authorId" th:value="${userProfile.getId()}">
+
+        <button th:if="${userProfile.getId() == user.getId()}" type="submit" class="btn btn-primary">
+            Ваши статьи
+        </button>
+        <button th:if="${userProfile.getId() != user.getId()}" type="submit" class="btn btn-primary">
+            Статьи пользователя
+        </button>
+    </form>
+</div>
+
+
 <div class="mt-5">
     <div class="container mt-5">
         <h>Подписчики:</h>

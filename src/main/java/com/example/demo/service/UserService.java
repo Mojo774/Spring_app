@@ -69,7 +69,29 @@ public class UserService implements UserDetailsService {
     }
 
     public User findIdFromDB(long id) {
-        User userFromDb = userRepository.findById(id);
+        User userFromDb = null;
+
+        try {
+            userFromDb = userRepository.findById(id);
+        } catch (Exception e) {
+
+        }
+
+        return userFromDb;
+    }
+
+    public User findIdFromDB(String id) {
+        User userFromDb = null;
+
+        try {
+            if (id.equals("") || !id.matches("[0-9]+")) {
+                throw new Exception();
+            }
+
+            userFromDb = userRepository.findById(Long.parseLong(id));
+        } catch (Exception e) {
+
+        }
 
 
         return userFromDb;
@@ -115,7 +137,7 @@ public class UserService implements UserDetailsService {
             return "Activation code is not found";
         }
 
-        if (user.getNewEmail()!=null && !isEmailFree(user, user.getNewEmail())) {
+        if (user.getNewEmail() != null && !isEmailFree(user, user.getNewEmail())) {
             return "Пользователь с такой почтой уже зарегистрирован";
         }
 

@@ -5,17 +5,24 @@
                 <a class="page-link" href="#">Pages</a>
             </li>
             <li class="page-item">
-                <a class="page-link" th:href="@{/blog(size=${posts.size}, page=${previousPage})}">Previous</a>
+                <a class="page-link"
+                   th:href="@{/blog(size=${posts.size}, page=${previousPage}, filter=${filter}, authorId=${authorId})}">
+                    Previous
+                </a>
             </li>
             <div th:each="pageNumber : ${pageNumbers}">
                 <li th:class="${pageNumber==posts.number + 1} ? 'page-item active' : 'page-item'">
-                    <a th:href="@{/blog(size=${posts.size}, page=${pageNumber})}"
+                    <a th:href="@{/blog(size=${posts.size}, page=${pageNumber}, filter=${filter}, authorId=${authorId})}"
                        th:text="${pageNumber}"
-                       class="page-link"></a>
+                       class="page-link">
+                    </a>
                 </li>
             </div>
             <li class="page-item">
-                <a class="page-link" th:href="@{/blog(size=${posts.size}, page=${nextPage})}">Next</a>
+                <a class="page-link"
+                   th:href="@{/blog(size=${posts.size}, page=${nextPage}, filter=${filter}, authorId=${authorId})}">
+                    Next
+                </a>
             </li>
         </ul>
 
@@ -25,7 +32,7 @@
             </li>
             <div th:each="items : ${itemsPerPage}">
                 <li th:class="${items==posts.size} ? 'page-item active' : 'page-item'">
-                    <a th:href="@{/blog(size=${items})}"
+                    <a th:href="@{/blog(size=${items}, filter=${filter}, authorId=${authorId})}"
                        th:text="${items}"
                        class="page-link"></a>
                 </li>
