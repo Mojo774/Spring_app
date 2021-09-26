@@ -30,21 +30,16 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
 
-
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
 
-
         return user;
-
     }
 
-    private void sendMessage(String email, String message) {
+    private void sendMessage(String email, String type, String message) {
         if (!StringUtils.isEmpty(email)) {
-            // Ссылку можно вынести в пропиртис
-
-            mailSender.send(email, "Activation code", message);
+            mailSender.send(email, type, message);
         }
     }
 
@@ -105,12 +100,17 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public void addUser(User user) {
+    public boolean addUser(User user) {
         if (findUsernameFromDB(user.getUsername())) {
-            return;
+            return false;
         }
 
         user.setActive(false);
+
+        // Устанавливаем роль
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.USER);
+        user.setRoles(roles);
 
         // генерируем код UUID
         user.setActivationCode(UUID.randomUUID().toString());
@@ -126,7 +126,10 @@ public class UserService implements UserDetailsService {
                 user.getActivationCode()
         );
 
-        sendMessage(user.getNewEmail(), message);
+        sendMessage(user.getNewEmail(), "Activation code", message);
+
+
+        return true;
     }
 
 
@@ -141,11 +144,6 @@ public class UserService implements UserDetailsService {
             return "Пользователь с такой почтой уже зарегистрирован";
         }
 
-        // Устанавливаем роль
-        Set<Role> roles = new HashSet<>();
-        roles.add(Role.USER);
-
-        user.setRoles(roles);
 
         // Заменяем пароль и почту новыми, если они есть
         if (user.getNewEmail() != null) {
@@ -227,9 +225,9 @@ public class UserService implements UserDetailsService {
         );
 
         if (isEmailChanged) {
-            sendMessage(email, message);
+            sendMessage(email, "Activation code", message);
         } else {
-            sendMessage(oldEmail, message);
+            sendMessage(oldEmail, "Activation code", message);
         }
 
         return String.format("Подтвердите изменения на почте %s", user.getEmail());
