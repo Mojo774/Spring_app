@@ -15,7 +15,7 @@
         <h1>Мой профиль</h1>
         <h4 th:text="'My name: ' + ${userProfile.getUsername()}"></h4>
 
-        <a th:href="'/profile/' + ${userProfile.getId()} + '/edit'" class="btn btn-info mt-3">
+        <a th:href="'/profile/' + ${userProfile.getId()} + '/edit'" class="btn btn-primary mt-3">
             Edit profile
         </a>
 
@@ -28,11 +28,11 @@
         </form>
 
         <div sec:authorize="hasAuthority('ADMIN')" class="mt-3">
-            <a href="/user" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Список пользователей</a>
+            <a href="/user" class="btn btn-success" role="button" aria-pressed="true">Список пользователей</a>
         </div>
 
         <div class="mt-3">
-            <a href="/logout" class="btn btn-primary" role="button" aria-pressed="true">Выйти</a>
+            <a href="/logout" class="btn btn-danger" role="button" aria-pressed="true">Выйти</a>
         </div>
     </div>
 
@@ -41,14 +41,14 @@
         <h4 th:text="'Name: ' + ${userProfile.getUsername()}"></h4>
 
         <div th:if="${!userProfile.getSubscribers().contains(user)}" class="mt-3">
-            <a class="btn btn-info" th:href="'/profile/subscribe/' + ${userProfile.getId()}">
+            <a class="btn btn-primary" th:href="'/profile/subscribe/' + ${userProfile.getId()}">
                 Подписаться <i class="far fa-bookmark"></i>
             </a>
 
         </div>
 
         <div th:if="${userProfile.getSubscribers().contains(user)}" class="mt-3">
-            <a class="btn btn-info" th:href="'/profile/unsubscribe/' + ${userProfile.getId()}">
+            <a class="btn btn-primary" th:href="'/profile/unsubscribe/' + ${userProfile.getId()}">
                 Отписаться <i class="fas fa-bookmark"></i>
             </a>
         </div>

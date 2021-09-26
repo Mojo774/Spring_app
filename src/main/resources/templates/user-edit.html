@@ -9,20 +9,23 @@
 
 <header th:insert="blocks/header :: header"></header>
 
-<h1>Редактирование пользователя</h1>
-
 <form action="/user" method="post">
-    <div th:each="element : ${user}" class="alert alert-info mt-2">
-        <h3 th:text="${element.getUsername()}"/>
+    <div class="container mt-3">
+        <h1>Редактирование пользователя</h1>
 
-        <div th:each="role : ${userRoles}">
-            <label><input type="checkbox" th:name="${role.getKey()}" th:text="' ' + ${role.getKey()}" th:checked="${role.getValue()}? 'checked'"/></label>
+        <div th:each="element : ${user}" class="alert alert-info mt-2">
+            <h3 th:text="${element.getUsername()}"/>
+
+            <div th:each="role : ${userRoles}">
+                <label><input type="checkbox" th:name="${role.getKey()}" th:text="' ' + ${role.getKey()}"
+                              th:checked="${role.getValue()}? 'checked'"/></label>
+            </div>
+
+            <input type="hidden" th:value="${element.getId()}" name="userId">
         </div>
 
-        <input type="hidden" th:value="${element.getId()}" name="userId">
+        <button class="btn btn-primary" type="submit">Save</button>
     </div>
-
-    <button type="submit">Save</button>
 </form>
 
 

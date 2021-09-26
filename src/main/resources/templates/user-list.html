@@ -9,7 +9,7 @@
 
 <header th:insert="blocks/header :: header"></header>
 
-<div th:each="element : ${users}" class="alert alert-info mt-2">
+<div th:each="element : ${users}" class="container mt-3 alert alert-info mt-2">
     <h3 th:text="${element.getUsername()}" />
 
     <div th:each="role : ${element.getRoles()}">
