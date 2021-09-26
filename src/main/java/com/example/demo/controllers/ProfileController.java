@@ -45,7 +45,25 @@ public class ProfileController {
         return "profile";
     }
 
-    @PostMapping("/profile/{id}")
+    @GetMapping("/profile/{id}/edit")
+    public String getUpdateProfile (
+            @PathVariable(value = "id") long id,
+            @AuthenticationPrincipal User user,
+            Model model
+    ) {
+        User userProfile = userService.findIdFromDB(id);
+
+        if (userProfile == null) {
+            return "redirect:/";
+        }
+
+
+        model.addAttribute("userProfile", userProfile);
+        model.addAttribute("user",user);
+        return "profile-edit";
+    }
+
+    @PostMapping("/profile/{id}/edit")
     public String updateProfile(
             @AuthenticationPrincipal User user,
             @RequestParam String password,
@@ -61,7 +79,7 @@ public class ProfileController {
         model.addAttribute("userProfile", user);
         model.addAttribute("user",user);
 
-        return "profile";
+        return "profile-edit";
 
     }
 

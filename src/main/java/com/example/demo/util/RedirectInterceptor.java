@@ -12,7 +12,13 @@ public class RedirectInterceptor extends HandlerInterceptorAdapter {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         if (modelAndView != null) {
             String args = request.getQueryString() != null ? request.getQueryString() : "";
-            String url = request.getRequestURI().toString() + "?" + args;
+
+            String url;
+            if (args.equals("")){
+                url = request.getRequestURI().toString();
+            } else {
+                url = request.getRequestURI().toString() + "?" + args;
+            }
             response.setHeader("Turbolinks-Location", url);
         }
     }

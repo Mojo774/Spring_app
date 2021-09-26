@@ -32,4 +32,10 @@ public class MainController {
         return "about";
     }
 
+    @GetMapping("/start")
+    public String start(Model model) {
+
+        return "home-start";
+    }
+
 }

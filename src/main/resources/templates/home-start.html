@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:insert="blocks/bootstrap :: bootstrap"></div>
+</head>
+<body>
+
+<header th:insert="blocks/header :: header"></header>
+
+<div class="container mt-3">
+    <p class="text-sm-start">Добро пожаловать на сайт</p>
+    <p class="text-sm-start">После прохождении <a href="/registration">регистрации</a> вам будет открыт доступ к всем функциям сайта</p>
+    <p class="text-sm-start">Вы можете начать <a href="/blog/add">создавать</a> статьи</p>
+    <p class="text-sm-start">Так же вы можете просматривать статьи других пользователей</p>
+    <p class="text-sm-start">И ставить им оценки, а также подписываться на авторов</p>
+    <p class="text-sm-start">Ваши подписки и подписчики, а так же статьи будут доступны в <a href="/profile">профиле</a> </p>
+</div>
+
+<div th:insert="blocks/footer :: footer"></div>
+
+</body>
+</html>
