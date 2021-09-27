@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "user")
 public class User implements UserDetails{
+
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
@@ -31,7 +32,6 @@ public class User implements UserDetails{
     private String password;
 
     private boolean active;
-
 
     private String email;
 
@@ -52,9 +52,6 @@ public class User implements UserDetails{
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-
-
-    //
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_subscriptions",
@@ -62,7 +59,6 @@ public class User implements UserDetails{
             inverseJoinColumns = {@JoinColumn(name = "subscriber_id")}
     )
     private Set<User> subscribers = new HashSet<>();
-
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

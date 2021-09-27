@@ -10,7 +10,9 @@ import java.util.Set;
 // https://developers.google.com/recaptcha/docs/display
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CaptchaResponseDto {
+
     private boolean success;
+
     @JsonAlias("error-codes")
     private Set<String> errorCode;
 

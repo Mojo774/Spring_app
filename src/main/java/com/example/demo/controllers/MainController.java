@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MainController {
+
     @Autowired
     private PostService postService;
 
@@ -20,19 +21,18 @@ public class MainController {
         Page<Post> posts = postService.findAll(
                 PageRequest.of(0, 9).withSort(Sort.Direction.DESC, "views")
         );
+
         model.addAttribute("posts", posts);
         return "home";
     }
 
     @GetMapping("/about")
     public String about(Model model) {
-
         return "about";
     }
 
     @GetMapping("/start")
     public String start(Model model) {
-
         return "home-start";
     }
 

@@ -17,6 +17,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
     @Autowired
     private UserService userService;
 
@@ -31,8 +32,8 @@ public class UserController {
     @GetMapping("/{user}")
     public String userEditForm(
             @PathVariable User user,
-            Model model
-    ) {
+            Model model) {
+
         model.addAttribute("user", user);
 
         Map<Role,Boolean> userRoles = userService.getUserRoles(user);

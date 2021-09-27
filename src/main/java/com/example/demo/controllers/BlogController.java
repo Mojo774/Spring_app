@@ -36,7 +36,6 @@ public class BlogController {
     @Autowired
     private UserService userService;
 
-
     @GetMapping()
     public String blogMain(
             @RequestParam(required = false, defaultValue = "") String filter,
@@ -44,8 +43,8 @@ public class BlogController {
             Model model,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam("page") Optional<Integer> page,
-            @RequestParam("size") Optional<Integer> size
-    ) {
+            @RequestParam("size") Optional<Integer> size) {
+
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
 
@@ -63,6 +62,7 @@ public class BlogController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
+
         List<Integer> itemsPerPage = Arrays.asList(5,10,20,50);
         model.addAttribute("itemsPerPage",itemsPerPage);
 
@@ -83,8 +83,8 @@ public class BlogController {
     @GetMapping(params = "clear")
     public String clear(
             @RequestParam(required = false, defaultValue = "") String authorId,
-            Model model
-    ) {
+            Model model) {
+
         if (!authorId.equals(""))
             return "redirect:/blog?authorId="+authorId;
         else
@@ -120,16 +120,14 @@ public class BlogController {
             postService.save(post);
             return "redirect:/blog";
         }
-
     }
-
 
     @GetMapping("/{id}")
     public String blogDetails(
             @AuthenticationPrincipal User user,
             @PathVariable(value = "id") long id,
-            Model model
-    ) {
+            Model model) {
+
         if (!postService.existsById(id)) {
             return "redirect:/blog";
         }
@@ -154,8 +152,7 @@ public class BlogController {
     public String blogEdit(
             @AuthenticationPrincipal User user,
             @PathVariable(value = "id") long id,
-            Model model
-    ) {
+            Model model) {
 
         try {
             Post post = postService.findById(id);
@@ -172,7 +169,6 @@ public class BlogController {
 
         return "blog-edit";
     }
-
 
     @PostMapping("/{id}/edit")
     public String blogPostUpdate(
@@ -200,9 +196,7 @@ public class BlogController {
     public String blogPostDelete(
             @AuthenticationPrincipal User user,
             @PathVariable(value = "id") long id,
-            Model model
-    ) {
-
+            Model model) {
 
         try {
             Post post = postService.findById(id);
@@ -226,8 +220,7 @@ public class BlogController {
             @PathVariable String grade,
             RedirectAttributes redirectAttributes,
             @RequestHeader(required = false) String referer,
-            Model model
-    ) {
+            Model model) {
 
         postService.ratePost(user, post, Grade.valueOf(grade));
 
@@ -240,6 +233,5 @@ public class BlogController {
                 .forEach(pair -> redirectAttributes.addAttribute(pair.getKey(), pair.getValue()));
         return "redirect:" + components.getPath();
     }
-
 
 }

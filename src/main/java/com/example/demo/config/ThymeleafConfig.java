@@ -8,10 +8,9 @@ import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 // Нужен для использования sec:
 @Configuration
 public class ThymeleafConfig {
+
     @Bean
     public SpringSecurityDialect springSecurityDialect(){
         return new SpringSecurityDialect();
     }
-
-
 }

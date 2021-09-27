@@ -17,17 +17,21 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private MailSender mailSender;
+
     @Qualifier("getPasswordEncoder")
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username)
+            throws UsernameNotFoundException {
+
         User user = userRepository.findByUsername(username);
 
         if (user == null) {
@@ -43,24 +47,28 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public boolean findEmailFromDB(String email) {
-        User userFromDb = userRepository.findByEmail(email);
+    public User findEmailFromDB(String email) {
+        User userFromDb = null;
 
-        if (userFromDb == null) {
-            return false;
+        try {
+            userFromDb = userRepository.findByEmail(email);
+        } catch (Exception e) {
+
         }
 
-        return true;
+        return userFromDb;
     }
 
-    public boolean findUsernameFromDB(String username) {
-        User userFromDb = userRepository.findByUsername(username);
+    public User findUsernameFromDB(String username) {
+        User userFromDb = null;
 
-        if (userFromDb == null) {
-            return false;
+        try {
+            userFromDb = userRepository.findByUsername(username);
+        } catch (Exception e) {
+
         }
 
-        return true;
+        return userFromDb;
     }
 
     public User findIdFromDB(long id) {
@@ -84,10 +92,10 @@ public class UserService implements UserDetailsService {
             }
 
             userFromDb = userRepository.findById(Long.parseLong(id));
+
         } catch (Exception e) {
 
         }
-
 
         return userFromDb;
     }
@@ -101,7 +109,7 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean addUser(User user) {
-        if (findUsernameFromDB(user.getUsername())) {
+        if (findUsernameFromDB(user.getUsername()) != null) {
             return false;
         }
 
@@ -116,7 +124,6 @@ public class UserService implements UserDetailsService {
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-
         userRepository.save(user);
 
         String message = String.format(
@@ -128,10 +135,8 @@ public class UserService implements UserDetailsService {
 
         sendMessage(user.getNewEmail(), "Activation code", message);
 
-
         return true;
     }
-
 
     public String activateUser(String code) {
         User user = userRepository.findByActivationCode(code);
@@ -143,7 +148,6 @@ public class UserService implements UserDetailsService {
         if (user.getNewEmail() != null && !isEmailFree(user, user.getNewEmail())) {
             return "Пользователь с такой почтой уже зарегистрирован";
         }
-
 
         // Заменяем пароль и почту новыми, если они есть
         if (user.getNewEmail() != null) {
@@ -158,9 +162,7 @@ public class UserService implements UserDetailsService {
         user.setActivationCode(null);
         user.setActive(true);
 
-
         userRepository.save(user);
-
 
         return "User successfully activated";
     }
@@ -178,11 +180,15 @@ public class UserService implements UserDetailsService {
             }
         }
 
-
         userRepository.save(user);
     }
 
-    public String updateProfile(User user, String password, String email, String oldPassword) {
+    public String updateProfile(
+            User user,
+            String password,
+            String email,
+            String oldPassword) {
+
         // Проверка старого пароля для сохранения изменений
         if (!passwordEncoder.matches(oldPassword, user.getPassword()))
             return "Вы ввели неправильный пароль";
@@ -212,7 +218,6 @@ public class UserService implements UserDetailsService {
             user.setNewPassword(passwordEncoder.encode(password));
         }
 
-
         user.setActivationCode(UUID.randomUUID().toString());
 
         userRepository.save(user);
@@ -231,7 +236,6 @@ public class UserService implements UserDetailsService {
         }
 
         return String.format("Подтвердите изменения на почте %s", user.getEmail());
-
     }
 
 
@@ -251,7 +255,6 @@ public class UserService implements UserDetailsService {
         userProfile.getSubscribers().add(user);
 
         userRepository.save(userProfile);
-
     }
 
     public void unsubscribe(User user, User userProfile) {
@@ -273,4 +276,5 @@ public class UserService implements UserDetailsService {
 
         return userRoles;
     }
+
 }

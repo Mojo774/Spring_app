@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/profile")
 public class ProfileController {
+
     @Autowired
     private UserService userService;
 
@@ -20,8 +21,8 @@ public class ProfileController {
     @GetMapping()
     public String getProfile(
             @AuthenticationPrincipal User user,
-            Model model
-    ) {
+            Model model) {
+
         return "redirect:/profile/"+user.getId();
     }
 
@@ -29,8 +30,7 @@ public class ProfileController {
     public String getProfile2(
             @PathVariable(value = "id") long id,
             @AuthenticationPrincipal User user,
-            Model model
-    ) {
+            Model model) {
 
         User userProfile = userService.findIdFromDB(id);
 
@@ -48,8 +48,7 @@ public class ProfileController {
     public String getUpdateProfile (
             @PathVariable(value = "id") long id,
             @AuthenticationPrincipal User user,
-            Model model
-    ) {
+            Model model) {
 
         User userProfile = userService.findIdFromDB(id);
 
@@ -68,8 +67,7 @@ public class ProfileController {
             @RequestParam String password,
             @RequestParam String email,
             @RequestParam String oldPassword,
-            Model model
-    ) {
+            Model model) {
 
         String message = userService.updateProfile(user, password, email, oldPassword);
 
@@ -85,8 +83,8 @@ public class ProfileController {
     public String subscribe(
             @AuthenticationPrincipal User user,
             @PathVariable(value = "id") long id,
-            Model model
-    ){
+            Model model){
+
         User userProfile = userService.findIdFromDB(id);
 
         userService.subscribe(user, userProfile);
@@ -98,8 +96,8 @@ public class ProfileController {
     public String unsubscribe(
             @AuthenticationPrincipal User user,
             @PathVariable(value = "id") long id,
-            Model model
-    ){
+            Model model){
+
         User userProfile = userService.findIdFromDB(id);
 
         userService.unsubscribe(user, userProfile);

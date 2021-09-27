@@ -15,8 +15,25 @@ import java.util.Set;
 
 @Service
 public class PostService {
+
     @Autowired
     private PostRepository postRepository;
+
+    private void resetGrade(Post post, User user) {
+        Set<User> set = post.getLikes();
+        set.remove(user);
+        post.setLikes(set);
+
+        set = post.getDislikes();
+        set.remove(user);
+        post.setDislikes(set);
+
+        set = post.getOks();
+        set.remove(user);
+        post.setOks(set);
+
+        postRepository.save(post);
+    }
 
     public Page<Post> findByTitle(Pageable pageable, String filter) {
         return postRepository.findByTitle(pageable, filter);
@@ -57,13 +74,14 @@ public class PostService {
         postRepository.save(originalPost);
     }
 
-    public Page<Post> getPostsByFilter(Pageable pageable, String filter, User author) {
+    public Page<Post> getPostsByFilter(
+            Pageable pageable,
+            String filter,
+            User author) {
 
         boolean isAuthorNull = author == null;
         boolean isFilterNull = filter == null || filter.isEmpty();
-        
-        
-        
+
         if (!isAuthorNull) {
 
             if (!isFilterNull)
@@ -82,9 +100,7 @@ public class PostService {
         return postRepository.findByUser(pageable, author);
     }
 
-
     public void ratePost(User user, Post post, Grade grade) {
-
         Set<User> set = post.getSetGrade(grade);
 
         if (!set.contains(user)) {
@@ -108,22 +124,6 @@ public class PostService {
         if (post.getDislikes().contains(user))
             return 3;
         return 0;
-    }
-
-    private void resetGrade(Post post, User user) {
-        Set<User> set = post.getLikes();
-        set.remove(user);
-        post.setLikes(set);
-
-        set = post.getDislikes();
-        set.remove(user);
-        post.setDislikes(set);
-
-        set = post.getOks();
-        set.remove(user);
-        post.setOks(set);
-
-        postRepository.save(post);
     }
 
     // Проверка доступа пользователя к редактированию поста

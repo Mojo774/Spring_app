@@ -11,6 +11,7 @@ import java.util.Set;
 
 @Entity
 public class Post {
+
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
@@ -31,7 +32,6 @@ public class Post {
     private int views;
     private int viewsPerMonth;
     private int viewsPerWeek;
-
 
     @ManyToMany
     @JoinTable(

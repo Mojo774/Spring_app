@@ -57,13 +57,13 @@ public class RegistrationController {
         Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
         // Дополнительные проверки полей
         // Возможные ошибки в полях при регистрации
-        if (userService.findEmailFromDB(user.getNewEmail())) {
+        if (userService.findEmailFromDB(user.getNewEmail()) != null) {
             errorsMap.put("newEmailError","пользователь с такой почтой уже существует");
         }
         if (StringUtils.isEmpty(user.getNewEmail())) {
             errorsMap.put("newEmailError","Email cannot be empty");
         }
-        if (userService.findUsernameFromDB(user.getUsername())) {
+        if (userService.findUsernameFromDB(user.getUsername()) != null) {
             errorsMap.put("usernameError", "пользователь с таким именем уже существует");
         }
         if (!user.getPassword().equals(passwordCheck)){
