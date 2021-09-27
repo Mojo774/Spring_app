@@ -52,7 +52,9 @@ public class BlogController {
         User author = userService.findIdFromDB(authorId);
 
         Page<Post> posts;
-        posts = postService.getPostsByFilter(PageRequest.of(currentPage - 1, pageSize), filter, author);
+        posts = postService.getPostsByFilter(
+                PageRequest.of(currentPage - 1, pageSize), filter, author
+        );
 
         int totalPages = posts.getTotalPages();
         if (totalPages > 0) {
@@ -112,7 +114,6 @@ public class BlogController {
 
             model.mergeAttributes(errorsMap);
             return "blog-add";
-
         } else {
             post.setAuthor(user);
 
@@ -135,7 +136,6 @@ public class BlogController {
 
         Post post = postService.findById(id);
         postService.addView(post);
-
 
         int grade = postService.getGrade(post, user);
 
@@ -181,7 +181,6 @@ public class BlogController {
             @Valid Post post,
             BindingResult bindingResult,
             Model model) {
-
 
         Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 

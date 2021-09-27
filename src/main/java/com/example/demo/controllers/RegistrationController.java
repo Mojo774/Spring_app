@@ -73,13 +73,11 @@ public class RegistrationController {
             errorsMap.put("captchaError","Fill captcha");
         }
 
-
         if (!errorsMap.isEmpty() || !response.isSuccess()){
 
             model.mergeAttributes(errorsMap);
 
             return "registration";
-
         } else {
 
             userService.addUser(user);

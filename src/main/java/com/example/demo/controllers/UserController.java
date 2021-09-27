@@ -29,23 +29,15 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{user}")
-    public String userEditForm(@PathVariable User user, Model model) {
-        List<User> list = new ArrayList<>();
-        list.add(user);
+    public String userEditForm(
+            @PathVariable User user,
+            Model model
+    ) {
+        model.addAttribute("user", user);
 
-        model.addAttribute("user", list);
-
-        Map<Role,Boolean> userRoles = new HashMap<>();
-
-        for (Role role: Role.values()){
-            if (user.getRoles().contains(role)){
-                userRoles.put(role,true);
-            } else {
-                userRoles.put(role,false);
-            }
-        }
-
+        Map<Role,Boolean> userRoles = userService.getUserRoles(user);
         model.addAttribute("userRoles", userRoles);
+
         return "user-edit";
     }
 

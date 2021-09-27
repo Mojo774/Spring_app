@@ -259,4 +259,18 @@ public class UserService implements UserDetailsService {
 
         userRepository.save(userProfile);
     }
+
+    public Map<Role, Boolean> getUserRoles(User user) {
+        Map<Role,Boolean> userRoles = new HashMap<>();
+
+        for (Role role: Role.values()){
+            if (user.getRoles().contains(role)){
+                userRoles.put(role,true);
+            } else {
+                userRoles.put(role,false);
+            }
+        }
+
+        return userRoles;
+    }
 }
