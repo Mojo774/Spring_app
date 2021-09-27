@@ -54,7 +54,12 @@
   * Сайт с иконками - font awesome
   * Pagination
   * Turbolinks
+ 
+### Тестирование
 
+* JUnit
+* Mockito
+* Hamcrest
 
 
 
