@@ -2,7 +2,7 @@
 create table post (
     id bigint not null,
     anons varchar(255) not null,
-    full_text MEDIUMTEXT not null,
+    full_text varchar(2048) not null,
     title varchar(255) not null,
     views integer not null,
     viewsPerMonth integer not null,
