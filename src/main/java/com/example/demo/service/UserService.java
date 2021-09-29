@@ -128,7 +128,7 @@ public class UserService implements UserDetailsService {
 
         String message = String.format(
                 "Hello, %s \n" +
-                        "Welcome to blog. Please , visit next link: http://localhost:8080/activate/%s",
+                        "Welcome to blog. Please , visit next link: http://https://blog227.herokuapp.com/activate/%s",
                 user.getUsername(),
                 user.getActivationCode()
         );
