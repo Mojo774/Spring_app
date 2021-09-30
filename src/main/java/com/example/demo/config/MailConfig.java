@@ -52,6 +52,8 @@ public class MailConfig {
         properties.setProperty("mail.smtp.auth", auth);
         properties.setProperty("mail.smtp.starttls.enable", enable);
 
+        properties.setProperty("mail.smtp.ssl.protocols", "TLSv1.2");
+
         return mailSender;
     }
 }
