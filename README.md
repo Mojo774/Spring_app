@@ -73,7 +73,7 @@ https://blog227.herokuapp.com/
 
 ![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
 
-![Alt Text](https://recordit.co/pNrf5qaO7C)
+![Alt Text](https://s3.amazonaws.com/img0.recordit.co/hll3dGS0tf.mp4?AWSAccessKeyId=AKIAUQ5RURZ7ND2T2B6I&Expires=1633014025&Signature=mL2emkZWesP4ikyeTzUZcrGCV%2FM%3D)
 
 
 
