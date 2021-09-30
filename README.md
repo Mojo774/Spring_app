@@ -61,5 +61,19 @@
 * Mockito
 * Hamcrest
 
+### Deploy
+Hosting - Heroku
+BD - ClearBD
+(В связи с тем что тариф хостинга бесплатный сайт падает каждые полчаса и БД дропается)
+(Из-за этого письмо на почту для подтверждния регистрации, скорее всего, не придет (проблема с гуглом))
+(Тариф БД так же бесплатный - падает при малейшей нагрузке)
+https://blog227.herokuapp.com/
+
+### GIF
+
+![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+
+![Alt Text](https://recordit.co/pNrf5qaO7C)
+
 
 
