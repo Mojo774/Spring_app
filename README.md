@@ -50,10 +50,10 @@
 ### Frontend
 
 * Шаблонизатор - thymeleaf
-  * Сайт с шаблонами - bootstrap
-  * Сайт с иконками - font awesome
-  * Pagination
-  * Turbolinks
+* Сайт с шаблонами - bootstrap
+* Сайт с иконками - font awesome
+* Pagination
+* Turbolinks
  
 ### Тестирование
 
