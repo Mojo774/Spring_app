@@ -71,9 +71,11 @@ https://blog227.herokuapp.com/
 
 ### GIF
 
-![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+![Alt Text](gif_for_git/1.gif)
 
-![Alt Text](https://s3.amazonaws.com/img0.recordit.co/hll3dGS0tf.mp4?AWSAccessKeyId=AKIAUQ5RURZ7ND2T2B6I&Expires=1633014025&Signature=mL2emkZWesP4ikyeTzUZcrGCV%2FM%3D)
+![](gif_for_git/1.gif)
+
+![](gif_for_git/2.gif)
 
 
 
