@@ -38,9 +38,8 @@
 * Maven
 * JDBC
 * JPA
-
-* Hibernate
-  * HQL (JPQL)
+  * Hibernate
+    * HQL (JPQL)
 
 * SQL
   * MySQL
