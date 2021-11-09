@@ -31,9 +31,9 @@
 
 * Spring framework
   * Boot
+  * Web
   * Security
-  * Mail
-  * Validation
+  * Data
 
 * Maven
 * JDBC
